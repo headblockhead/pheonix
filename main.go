@@ -14,6 +14,7 @@ type Scene struct {
 }
 
 type Objection struct {
+	objectionActive   bool
 	objectionType     string
 	objectionLocation int
 }
@@ -251,12 +252,13 @@ func main() {
 	scene.frames[1] = frame2
 	scene.frames[2] = frame3
 	scene.frames[3] = frame4
-
+	scene.objection.objectionActive = false
 	for i := 0; i < len(scene.frames); i++ {
 		if scene.frames[i].character.characterType == "D" {
 			if scene.frames[i].character.expression.Emotion == "Confident" {
 				scene.objection.objectionLocation = i - 1
 				scene.objection.objectionType = "Objection"
+				scene.objection.objectionActive = true
 				break
 			}
 		}
@@ -264,6 +266,7 @@ func main() {
 			if scene.frames[i].character.characterType == "C" && scene.frames[i-1].character.characterType == "W" {
 				scene.objection.objectionLocation = i - 1
 				scene.objection.objectionType = "TakeThat"
+				scene.objection.objectionActive = true
 				break
 			}
 		}
