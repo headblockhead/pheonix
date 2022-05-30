@@ -45,6 +45,11 @@ type Character struct {
 	characterType string
 	expression    Expression
 	name          string
+	speech        Dialouge
+}
+
+type Dialouge struct {
+	text string
 }
 
 type Expression struct {
@@ -255,7 +260,7 @@ func main() {
 	scene.objection.objectionActive = false
 	for i := 0; i < len(scene.frames); i++ {
 		if scene.frames[i].character.characterType == "D" {
-			if scene.frames[i].character.expression.Emotion == "Confident" {
+			if scene.frames[i].character.expression.Emotion == "Accusation" {
 				scene.objection.objectionLocation = i - 1
 				scene.objection.objectionType = "Objection"
 				scene.objection.objectionActive = true
@@ -271,9 +276,100 @@ func main() {
 			}
 		}
 	}
+	for i := 0; i < len(scene.frames); i++ {
+		scene.frames[i] = randomDialouge(scene.frames[i])
+	}
 	fmt.Println(scene)
 }
+func randomDialouge(frame Frame) (frameout Frame) {
+	pheonixConfidentDialouge1 := "That is correct."
+	pheonixConfidentDialouge2 := "I have evidence to back that up."
+	pheonixConfidentDialouge3 := "There is no problem here."
+	pheonixConfidentDialouge4 := "There is no problem with that."
+	pheonixConfidentDialouge5 := "That makes no difference."
+	pheonixConfidentDialouge6 := "That is a good theory, however I do not believe it."
+	pheonixConfidentDialouge7 := "That is a good theory."
+	pheonixConfidentDialouge8 := "I can see through your lies."
+	pheonixConfidentDialouges := []string{pheonixConfidentDialouge1, pheonixConfidentDialouge2, pheonixConfidentDialouge3, pheonixConfidentDialouge4, pheonixConfidentDialouge5, pheonixConfidentDialouge6, pheonixConfidentDialouge7, pheonixConfidentDialouge8}
+	pheonixAccusationDialouge1 := "I have evidence that proves the defendant was not at the scene of the crime!"
+	pheonixAccusationDialouge2 := "You were not inside the boat!"
+	pheonixAccusationDialouge3 := "That is not correct!"
+	pheonixAccusationDialouge4 := "You are wrong!"
+	pheonixAccusationDialouge5 := "The prosection is lying!"
+	pheonixAccusationDialouge6 := "There is a vital piece of evidence missing!"
+	pheonixAccusationDialouge7 := "You are not correct!"
+	pheonixAccusationDialouge8 := "There is not enough evidence!"
+	pheonixAccusationDialouges := []string{pheonixAccusationDialouge1, pheonixAccusationDialouge2, pheonixAccusationDialouge3, pheonixAccusationDialouge4, pheonixAccusationDialouge5, pheonixAccusationDialouge6, pheonixAccusationDialouge7, pheonixAccusationDialouge8}
+	pheonixSadDialouge1 := "Ouch! That hurt!"
+	pheonixSadDialouge2 := "Oww.. that burns!"
+	pheonixSadDialouge3 := "Hey!"
+	pheonixSadDialouges := []string{pheonixSadDialouge1, pheonixSadDialouge2, pheonixSadDialouge3}
+	pheonixPanicDialouge1 := "I.. Uhhh Ummm (How do I get out of this one?)"
+	pheonixPanicDialouge2 := "(Urk.)"
+	pheonixPanicDialouge3 := "(uh-oh)"
+	pheonixPanicDialouge4 := ""
+	pheonixPanicDialouge5 := ""
+	pheonixPanicDialouge6 := ""
+	pheonixPanicDialouge7 := ""
+	pheonixPanicDialouge8 := ""
+	pheonixPanicDialouges := []string{pheonixPanicDialouge1, pheonixPanicDialouge2, pheonixPanicDialouge3, pheonixPanicDialouge4, pheonixPanicDialouge5, pheonixPanicDialouge6, pheonixPanicDialouge7, pheonixPanicDialouge8}
 
+	edgeworthConfidentDialouge1 := ""
+	edgeworthConfidentDialouge2 := ""
+	edgeworthConfidentDialouge3 := ""
+	edgeworthConfidentDialouge4 := ""
+	edgeworthConfidentDialouge5 := ""
+	edgeworthConfidentDialouges := []string{edgeworthConfidentDialouge1, edgeworthConfidentDialouge2, edgeworthConfidentDialouge3, edgeworthConfidentDialouge4, edgeworthConfidentDialouge5}
+	edgeworthAccusationDialouge1 := ""
+	edgeworthAccusationDialouge2 := ""
+	edgeworthAccusationDialouge3 := ""
+	edgeworthAccusationDialouge4 := ""
+	edgeworthAccusationDialouge5 := ""
+	edgeworthAccusationDialouges := []string{edgeworthAccusationDialouge1, edgeworthAccusationDialouge2, edgeworthAccusationDialouge3, edgeworthAccusationDialouge4, edgeworthAccusationDialouge5}
+	edgeworthPanicDialouge1 := ""
+	edgeworthPanicDialouge2 := ""
+	edgeworthPanicDialouge3 := ""
+	edgeworthPanicDialouge4 := ""
+	edgeworthPanicDialouge5 := ""
+	edgeworthPanicDialouges := []string{edgeworthPanicDialouge1, edgeworthPanicDialouge2, edgeworthPanicDialouge3, edgeworthPanicDialouge4, edgeworthPanicDialouge5}
+	edgeworthDefaultDialouge1 := ""
+	edgeworthDefaultDialouge2 := ""
+	edgeworthDefaultDialouge3 := ""
+	edgeworthDefaultDialouge4 := ""
+	edgeworthDefaultDialouge5 := ""
+	edgeworthDefaultDialouges := []string{edgeworthDefaultDialouge1, edgeworthDefaultDialouge2, edgeworthDefaultDialouge3, edgeworthDefaultDialouge4, edgeworthDefaultDialouge5}
+
+	JudgeAccusationDialouge1 := ""
+	JudgeAccusationDialouge2 := ""
+	JudgeAccusationDialouge3 := ""
+	JudgeAccusationDialouge4 := ""
+	JudgeAccusationDialouge5 := ""
+	JudgeAccusationDialouge6 := ""
+	JudgeAccusationDialouge7 := ""
+	JudgeAccusationDialouge8 := ""
+	JudgeAccusationDialouges := []string{JudgeAccusationDialouge1, JudgeAccusationDialouge2, JudgeAccusationDialouge3, JudgeAccusationDialouge4, JudgeAccusationDialouge5, JudgeAccusationDialouge6, JudgeAccusationDialouge7, JudgeAccusationDialouge8}
+	JudgeDefaultDialouge1 := ""
+	JudgeDefaultDialouge2 := ""
+	JudgeDefaultDialouge3 := ""
+	JudgeDefaultDialouge4 := ""
+	JudgeDefaultDialouge5 := ""
+	JudgeDefaultDialouges := []string{JudgeDefaultDialouge1, JudgeDefaultDialouge2, JudgeDefaultDialouge3, JudgeDefaultDialouge4, JudgeDefaultDialouge5}
+	JudgePanicDialouge1 := ""
+	JudgePanicDialouge2 := ""
+	JudgePanicDialouge3 := ""
+	JudgePanicDialouge4 := ""
+	JudgePanicDialouge5 := ""
+	JudgePanicDialouge6 := ""
+	JudgePanicDialouge7 := ""
+	JudgePanicDialouge8 := ""
+	JudgePanicDialouges := []string{JudgePanicDialouge1, JudgePanicDialouge2, JudgePanicDialouge3, JudgePanicDialouge4, JudgePanicDialouge5, JudgePanicDialouge6, JudgePanicDialouge7, JudgePanicDialouge8}
+	if frame.character.characterType == "D" {
+		if frame.character.expression.Emotion == "Confident" {
+
+		}
+	}
+	return frameout
+}
 func RandomInExpressionList(list []Expression, scene Scene) Expression {
 	random := rand.Intn(len(list))
 	return list[random]
