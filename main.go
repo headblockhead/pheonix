@@ -2,7 +2,13 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"image/draw"
+	"image/jpeg"
+	"image/png"
+	"log"
 	"math/rand"
+	"os"
 )
 
 type Scene struct {
@@ -280,7 +286,148 @@ func main() {
 		scene.frames[i] = randomDialouge(scene.frames[i])
 	}
 	fmt.Println(scene)
+	bgpath, fgpath, characterpath := getpathsFromScene(scene)
+	bgimage, fgimage, characterimage := GetImages(bgpath, fgpath, characterpath)
+	finalimage := AssembleImage(bgimage, fgimage, characterimage)
+	saveimage(finalimage)
 }
+
+func saveimage(img image.Image) {
+	f, err := os.Create("img.jpg")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+	if err = jpeg.Encode(f, img, nil); err != nil {
+		log.Printf("failed to encode: %v", err)
+	}
+}
+
+func getpathsFromScene(scene Scene) (bg string, fg string, character string) {
+	for i := 0; i < len(scene.frames); i++ {
+		if scene.frames[i].character.characterType == "D" {
+			bg = "./images/background/defence.jpg"
+			fg = "./images/foreground/defence.png"
+			if scene.frames[i].character.expression.ID == "think" {
+				character = "./images/poses/defence/think.png"
+			}
+			if scene.frames[i].character.expression.ID == "confident" {
+				character = "./images/poses/defence/confident.png"
+			}
+			if scene.frames[i].character.expression.ID == "read" {
+				character = "./images/poses/defence/read.png"
+			}
+			if scene.frames[i].character.expression.ID == "point" {
+				character = "./images/poses/defence/point.png"
+			}
+			if scene.frames[i].character.expression.ID == "deskSlam" {
+				character = "./images/poses/defence/desk_slam.png"
+			}
+			if scene.frames[i].character.expression.ID == "silly" {
+				character = "./images/poses/defence/silly.png"
+			}
+			if scene.frames[i].character.expression.ID == "breakdown" {
+				character = "./images/poses/defence/breakdown.png"
+			}
+			if scene.frames[i].character.expression.ID == "coffe" {
+				character = "./images/poses/defence/coffe.png"
+			}
+		}
+		if scene.frames[i].character.characterType == "P" {
+			bg = "./images/background/prosecution.jpg"
+			fg = "./images/foreground/prosecution.png"
+			if scene.frames[i].character.expression.ID == "arms" {
+				character = "./images/poses/prosecution/arms.png"
+			}
+			if scene.frames[i].character.expression.ID == "confident" {
+				character = "./images/poses/prosecution/confident.png"
+			}
+			if scene.frames[i].character.expression.ID == "read" {
+				character = "./images/poses/prosecution/read.png"
+			}
+			if scene.frames[i].character.expression.ID == "cornered" {
+				character = "./images/poses/prosecution/cornered.png"
+			}
+			if scene.frames[i].character.expression.ID == "deskSlam" {
+				character = "./images/poses/prosecution/deskslam.png"
+			}
+			if scene.frames[i].character.expression.ID == "point" {
+				character = "./images/poses/prosecution/point.png"
+			}
+			if scene.frames[i].character.expression.ID == "stand" {
+				character = "./images/poses/prosecution/stand.png"
+			}
+		}
+		if scene.frames[i].character.characterType == "J" {
+			bg = "./images/background/judge.jpg"
+			fg = "./images/foreground/judge.png"
+			if scene.frames[i].character.expression.ID == "stand" {
+				character = "./images/poses/judge/stand.png"
+			}
+			if scene.frames[i].character.expression.ID == "angry" {
+				character = "./images/poses/judge/angry.png"
+			}
+			if scene.frames[i].character.expression.ID == "surprise" {
+				character = "./images/poses/judge/surprise.png"
+			}
+		}
+	}
+	return bg, fg, character
+}
+
+func combineImages(img1 image.Image, img2 image.Image) (image.Image, error) {
+	//starting position of the second image (bottom left)
+	sp2 := image.Point{img1.Bounds().Dx(), 0}
+	//new rectangle for the second image
+	r2 := image.Rectangle{sp2, sp2.Add(img2.Bounds().Size())}
+	//rectangle for the big image
+	r := image.Rectangle{image.Point{0, 0}, r2.Max}
+	rgba := image.NewRGBA(r)
+	draw.Draw(rgba, img1.Bounds(), img1, image.Point{0, 0}, draw.Src)
+	draw.Draw(rgba, r2, img2, image.Point{0, 0}, draw.Src)
+	return rgba, nil
+}
+
+func AssembleImage(bg image.Image, fg image.Image, character image.Image) image.Image {
+	bgchar, err := combineImages(bg, character)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fgbgchar, err := combineImages(bgchar, fg)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return fgbgchar
+}
+
+func GetImages(bgpath, fgpath, characterpath string) (bg image.Image, fg image.Image, character image.Image) {
+	imgFile1, err := os.Open(bgpath)
+	if err != nil {
+		fmt.Println(err)
+	}
+	imgFile2, err := os.Open(fgpath)
+	if err != nil {
+		fmt.Println(err)
+	}
+	imgFile3, err := os.Open(characterpath)
+	if err != nil {
+		fmt.Println(err)
+	}
+	bg, err = jpeg.Decode(imgFile1)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fg, err = png.Decode(imgFile2)
+	if err != nil {
+		fmt.Println(err)
+	}
+	character, err = png.Decode(imgFile3)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return bg, fg, character
+}
+
 func randomDialouge(frame Frame) Frame {
 	pheonixConfidentDialouge1 := "That is correct."
 	pheonixConfidentDialouge2 := "I have evidence to back that up!"
