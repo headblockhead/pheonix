@@ -254,10 +254,10 @@ func main() {
 	frame3 = RandomFrameCharacter(frame3, charactersD, charactersP, charactersJ, charactersW, charactersC)
 	frame4 = RandomFrameCharacter(frame4, charactersD, charactersP, charactersJ, charactersW, charactersC)
 
-	frame1 = setexpressions(frame1, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
-	frame2 = setexpressions(frame2, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
-	frame3 = setexpressions(frame3, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
-	frame4 = setexpressions(frame4, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
+	frame1 = setExpressions(frame1, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
+	frame2 = setExpressions(frame2, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
+	frame3 = setExpressions(frame3, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
+	frame4 = setExpressions(frame4, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
 
 	scene.frames[0] = frame1
 	scene.frames[1] = frame2
@@ -286,13 +286,13 @@ func main() {
 		scene.frames[i] = randomDialouge(scene.frames[i])
 	}
 	fmt.Println(scene)
-	bgpath, fgpath, characterpath := getpathsFromScene(scene)
+	bgpath, fgpath, characterpath := getPathsFromScene(scene)
 	bgimage, fgimage, characterimage := GetImages(bgpath, fgpath, characterpath)
 	finalimage := AssembleImage(bgimage, fgimage, characterimage)
-	saveimage(finalimage)
+	saveImage(finalimage)
 }
 
-func saveimage(img image.Image) {
+func saveImage(img image.Image) {
 	f, err := os.Create("img.jpg")
 	if err != nil {
 		panic(err)
@@ -303,7 +303,7 @@ func saveimage(img image.Image) {
 	}
 }
 
-func getpathsFromScene(scene Scene) (bg string, fg string, character string) {
+func getPathsFromScene(scene Scene) (bg string, fg string, character string) {
 	for i := 0; i < len(scene.frames); i++ {
 		if scene.frames[i].character.characterType == "D" {
 			bg = "./images/background/defence.jpg"
@@ -376,15 +376,9 @@ func getpathsFromScene(scene Scene) (bg string, fg string, character string) {
 }
 
 func combineImages(img1 image.Image, img2 image.Image) (image.Image, error) {
-	//starting position of the second image (bottom left)
-	sp2 := image.Point{img1.Bounds().Dx(), 0}
-	//new rectangle for the second image
-	r2 := image.Rectangle{sp2, sp2.Add(img2.Bounds().Size())}
-	//rectangle for the big image
-	r := image.Rectangle{image.Point{0, 0}, r2.Max}
-	rgba := image.NewRGBA(r)
-	draw.Draw(rgba, img1.Bounds(), img1, image.Point{0, 0}, draw.Src)
-	draw.Draw(rgba, r2, img2, image.Point{0, 0}, draw.Src)
+	rgba := image.NewRGBA(img1.Bounds())
+	draw.Draw(rgba, rgba.Bounds(), img1, image.ZP, draw.Over)
+	draw.Draw(rgba, rgba.Bounds(), img2, image.ZP, draw.Over)
 	return rgba, nil
 }
 
@@ -523,52 +517,52 @@ func randomDialouge(frame Frame) Frame {
 
 	if frame.character.characterType == "D" {
 		if frame.character.expression.Emotion == "Confident" {
-			frame.character.speech.text = RandomInDialougeList(pheonixConfidentDialouges)
+			frame.character.speech.text = RandomInDialogueList(pheonixConfidentDialouges)
 		}
 		if frame.character.expression.Emotion == "Sad" {
-			frame.character.speech.text = RandomInDialougeList(pheonixSadDialouges)
+			frame.character.speech.text = RandomInDialogueList(pheonixSadDialouges)
 		}
 		if frame.character.expression.Emotion == "Panic" {
-			frame.character.speech.text = RandomInDialougeList(pheonixPanicDialouges)
+			frame.character.speech.text = RandomInDialogueList(pheonixPanicDialouges)
 		}
 		if frame.character.expression.Emotion == "Accusation" {
-			frame.character.speech.text = RandomInDialougeList(pheonixAccusationDialouges)
+			frame.character.speech.text = RandomInDialogueList(pheonixAccusationDialouges)
 		}
 	}
 	if frame.character.characterType == "P" {
 		if frame.character.expression.Emotion == "Accusation" {
-			frame.character.speech.text = RandomInDialougeList(edgeworthAccusationDialouges)
+			frame.character.speech.text = RandomInDialogueList(edgeworthAccusationDialouges)
 		}
 		if frame.character.expression.Emotion == "Panic" {
-			frame.character.speech.text = RandomInDialougeList(edgeworthPanicDialouges)
+			frame.character.speech.text = RandomInDialogueList(edgeworthPanicDialouges)
 		}
 		if frame.character.expression.Emotion == "Default" {
-			frame.character.speech.text = RandomInDialougeList(edgeworthDefaultDialouges)
+			frame.character.speech.text = RandomInDialogueList(edgeworthDefaultDialouges)
 		}
 		if frame.character.expression.Emotion == "Confident" {
-			frame.character.speech.text = RandomInDialougeList(edgeworthConfidentDialouges)
+			frame.character.speech.text = RandomInDialogueList(edgeworthConfidentDialouges)
 		}
 	}
 	if frame.character.characterType == "J" {
 		if frame.character.expression.Emotion == "Accusation" {
-			frame.character.speech.text = RandomInDialougeList(JudgeAccusationDialouges)
+			frame.character.speech.text = RandomInDialogueList(JudgeAccusationDialouges)
 		}
 		if frame.character.expression.Emotion == "Panic" {
-			frame.character.speech.text = RandomInDialougeList(JudgePanicDialouges)
+			frame.character.speech.text = RandomInDialogueList(JudgePanicDialouges)
 		}
 		if frame.character.expression.Emotion == "Default" {
-			frame.character.speech.text = RandomInDialougeList(JudgeDefaultDialouges)
+			frame.character.speech.text = RandomInDialogueList(JudgeDefaultDialouges)
 		}
 	}
 	if frame.character.characterType == "W" {
 		if frame.character.expression.Emotion == "Default" {
-			frame.character.speech.text = RandomInDialougeList(WitnessDefaultDialouges)
+			frame.character.speech.text = RandomInDialogueList(WitnessDefaultDialouges)
 		}
 	}
 	return frame
 }
 
-func RandomInDialougeList(list []string) string {
+func RandomInDialogueList(list []string) string {
 	random := rand.Intn(len(list))
 	return list[random]
 }
@@ -583,7 +577,7 @@ func RandomInEmotionList(list []EmotionPattern) EmotionPattern {
 	return list[random]
 }
 
-func setexpressions(frame Frame, scene Scene, PheonixExpressionsConfident []Expression, EdgeworthExpressionsConfident []Expression, EdgeworthExpressionsDefault []Expression, JudgeExpressionsDefault []Expression, JudgeExpressionsPanic []Expression, PheonixExpressionsPanic []Expression, PheonixExpressionsAccusation []Expression, PheonixExpressionsSad []Expression, EdgeworthExpressionsPanic []Expression, EdgeworthExpressionsAccusation []Expression, JudgeExpressionsAccusation []Expression) Frame {
+func setExpressions(frame Frame, scene Scene, PheonixExpressionsConfident []Expression, EdgeworthExpressionsConfident []Expression, EdgeworthExpressionsDefault []Expression, JudgeExpressionsDefault []Expression, JudgeExpressionsPanic []Expression, PheonixExpressionsPanic []Expression, PheonixExpressionsAccusation []Expression, PheonixExpressionsSad []Expression, EdgeworthExpressionsPanic []Expression, EdgeworthExpressionsAccusation []Expression, JudgeExpressionsAccusation []Expression) Frame {
 	if frame.character.characterType == "D" {
 		if scene.emotionpattern.emotionTypes[frame.id] == "Confident" {
 			frame.character.expression = RandomInExpressionList(PheonixExpressionsConfident)
