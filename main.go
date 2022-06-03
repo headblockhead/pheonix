@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"image"
 	"image/draw"
@@ -286,14 +287,47 @@ func main() {
 		scene.frames[i] = randomDialouge(scene.frames[i])
 	}
 	fmt.Println(scene)
-	bgpath, fgpath, characterpath := getPathsFromScene(scene)
-	bgimage, fgimage, characterimage := GetImages(bgpath, fgpath, characterpath)
-	finalimage := AssembleImage(bgimage, fgimage, characterimage)
-	saveImage(finalimage)
+	if scene.objection.objectionActive {
+		objectionPath, err := getObjectionFramePath(scene.objection)
+		if err != nil {
+			fmt.Println("Error getting objection path: ", err)
+			os.Exit(1)
+		}
+		objectionImage := GetImage(objectionPath)
+		saveImage(objectionImage, "objection"+fmt.Sprintf("%d", scene.objection.objectionLocation)+".jpg")
+	}
+	for i := 0; i < len(scene.frames); i++ {
+		bgpath, fgpath, characterpath := getPathsFromFrame(scene.frames[i])
+		bgimage, fgimage, characterimage, err := GetImages(bgpath, fgpath, characterpath)
+		if err != nil {
+			fmt.Println("Error getting images: ", err)
+			fmt.Println("Paths: ", bgpath, fgpath, characterpath)
+			os.Exit(1)
+		}
+		finalimage, err := AssembleImage(bgimage, fgimage, characterimage)
+		if err != nil {
+			fmt.Println("Error assembling image: ", err)
+			os.Exit(1)
+		}
+		saveImage(finalimage, "image"+fmt.Sprintf("%d", i)+".jpg")
+	}
 }
 
-func saveImage(img image.Image) {
-	f, err := os.Create("img.jpg")
+func getObjectionFramePath(objection Objection) (path string, err error) {
+	if objection.objectionType == "Objection" {
+		path = "./images/speech_bub/objection.png"
+	} else if objection.objectionType == "TakeThat" {
+		path = "./images/speech_bub/takethat.png"
+	} else if objection.objectionType == "HoldIt" {
+		path = "./images/speech_bub/hold_it.png"
+	} else {
+		return "", errors.New("no objections active")
+	}
+	return path, nil
+}
+
+func saveImage(img image.Image, path string) {
+	f, err := os.Create(path)
 	if err != nil {
 		panic(err)
 	}
@@ -303,73 +337,103 @@ func saveImage(img image.Image) {
 	}
 }
 
-func getPathsFromScene(scene Scene) (bg string, fg string, character string) {
-	for i := 0; i < len(scene.frames); i++ {
-		if scene.frames[i].character.characterType == "D" {
-			bg = "./images/background/defence.jpg"
-			fg = "./images/foreground/defence.png"
-			if scene.frames[i].character.expression.ID == "think" {
-				character = "./images/poses/defence/think.png"
-			}
-			if scene.frames[i].character.expression.ID == "confident" {
-				character = "./images/poses/defence/confident.png"
-			}
-			if scene.frames[i].character.expression.ID == "read" {
-				character = "./images/poses/defence/read.png"
-			}
-			if scene.frames[i].character.expression.ID == "point" {
-				character = "./images/poses/defence/point.png"
-			}
-			if scene.frames[i].character.expression.ID == "deskSlam" {
-				character = "./images/poses/defence/desk_slam.png"
-			}
-			if scene.frames[i].character.expression.ID == "silly" {
-				character = "./images/poses/defence/silly.png"
-			}
-			if scene.frames[i].character.expression.ID == "breakdown" {
-				character = "./images/poses/defence/breakdown.png"
-			}
-			if scene.frames[i].character.expression.ID == "coffe" {
-				character = "./images/poses/defence/coffe.png"
-			}
+func getPathsFromFrame(frame Frame) (bg string, fg string, character string) {
+	if frame.character.characterType == "D" {
+		bg = "./images/background/defence.jpg"
+		fg = "./images/foreground/defence.png"
+		if frame.character.expression.ID == "think" {
+			character = "./images/poses/defence/think.png"
 		}
-		if scene.frames[i].character.characterType == "P" {
-			bg = "./images/background/prosecution.jpg"
-			fg = "./images/foreground/prosecution.png"
-			if scene.frames[i].character.expression.ID == "arms" {
-				character = "./images/poses/prosecution/arms.png"
-			}
-			if scene.frames[i].character.expression.ID == "confident" {
-				character = "./images/poses/prosecution/confident.png"
-			}
-			if scene.frames[i].character.expression.ID == "read" {
-				character = "./images/poses/prosecution/read.png"
-			}
-			if scene.frames[i].character.expression.ID == "cornered" {
-				character = "./images/poses/prosecution/cornered.png"
-			}
-			if scene.frames[i].character.expression.ID == "deskSlam" {
-				character = "./images/poses/prosecution/deskslam.png"
-			}
-			if scene.frames[i].character.expression.ID == "point" {
-				character = "./images/poses/prosecution/point.png"
-			}
-			if scene.frames[i].character.expression.ID == "stand" {
-				character = "./images/poses/prosecution/stand.png"
-			}
+		if frame.character.expression.ID == "angry" {
+			character = "./images/poses/defence/desk_slam.png"
 		}
-		if scene.frames[i].character.characterType == "J" {
-			bg = "./images/background/judge.jpg"
-			fg = "./images/foreground/judge.png"
-			if scene.frames[i].character.expression.ID == "stand" {
-				character = "./images/poses/judge/stand.png"
-			}
-			if scene.frames[i].character.expression.ID == "angry" {
-				character = "./images/poses/judge/angry.png"
-			}
-			if scene.frames[i].character.expression.ID == "surprise" {
-				character = "./images/poses/judge/surprise.png"
-			}
+		if frame.character.expression.ID == "confident" {
+			character = "./images/poses/defence/confident.png"
+		}
+		if frame.character.expression.ID == "read" {
+			character = "./images/poses/defence/read.png"
+		}
+		if frame.character.expression.ID == "point" {
+			character = "./images/poses/defence/point.png"
+		}
+		if frame.character.expression.ID == "deskSlam" {
+			character = "./images/poses/defence/desk_slam.png"
+		}
+		if frame.character.expression.ID == "silly" {
+			character = "./images/poses/defence/silly.png"
+		}
+		if frame.character.expression.ID == "breakdown" {
+			character = "./images/poses/defence/breakdown.png"
+		}
+		if frame.character.expression.ID == "coffe" {
+			character = "./images/poses/defence/coffe.png"
+		}
+	}
+	if frame.character.characterType == "P" {
+		bg = "./images/background/prosecution.jpg"
+		fg = "./images/foreground/prosecution.png"
+		if frame.character.expression.ID == "arms" {
+			character = "./images/poses/prosecution/arms.png"
+		}
+		if frame.character.expression.ID == "confident" {
+			character = "./images/poses/prosecution/confident.png"
+		}
+		if frame.character.expression.ID == "read" {
+			character = "./images/poses/prosecution/read.png"
+		}
+		if frame.character.expression.ID == "cornered" {
+			character = "./images/poses/prosecution/cornered.png"
+		}
+		if frame.character.expression.ID == "deskSlam" {
+			character = "./images/poses/prosecution/deskslam.png"
+		}
+		if frame.character.expression.ID == "point" {
+			character = "./images/poses/prosecution/point.png"
+		}
+		if frame.character.expression.ID == "stand" {
+			character = "./images/poses/prosecution/stand.png"
+		}
+	}
+	if frame.character.characterType == "J" {
+		bg = "./images/background/judge.jpg"
+		fg = "./images/foreground/judge.png"
+		if frame.character.expression.ID == "stand" {
+			character = "./images/poses/judge/stand.png"
+		}
+		if frame.character.expression.ID == "angry" {
+			character = "./images/poses/judge/angry.png"
+		}
+		if frame.character.expression.ID == "surprise" {
+			character = "./images/poses/judge/surprise.png"
+		}
+	}
+	if frame.character.characterType == "W" {
+		bg = "./images/background/witness.jpg"
+		fg = "./images/foreground/witness.png"
+		if frame.character.name == "Cody Hackins" {
+			character = "./images/poses/witness/cody.png"
+		}
+		if frame.character.name == "De Vasquez" {
+			character = "./images/poses/witness/des.png"
+		}
+		if frame.character.name == "Detective Gumshoe" {
+			character = "./images/poses/witness/detective.png"
+		}
+		if frame.character.name == "Godot" {
+			character = "./images/poses/witness/godot.png"
+		}
+		if frame.character.name == "Larry Butz" {
+			character = "./images/poses/witness/larry.png"
+		}
+		if frame.character.name == "Yanni Yogi" {
+			character = "./images/poses/witness/yanni.png"
+		}
+	}
+	if frame.character.characterType == "C" {
+		bg = "./images/background/gallery.jpg"
+		fg = "./images/foreground/gallery.png"
+		if frame.character.name == "Crowd" {
+			character = "./images/poses/crowd/blank.png"
 		}
 	}
 	return bg, fg, character
@@ -382,44 +446,58 @@ func combineImages(img1 image.Image, img2 image.Image) (image.Image, error) {
 	return rgba, nil
 }
 
-func AssembleImage(bg image.Image, fg image.Image, character image.Image) image.Image {
+func AssembleImage(bg image.Image, fg image.Image, character image.Image) (img image.Image, err error) {
 	bgchar, err := combineImages(bg, character)
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 	fgbgchar, err := combineImages(bgchar, fg)
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
-	return fgbgchar
+	return fgbgchar, err
 }
 
-func GetImages(bgpath, fgpath, characterpath string) (bg image.Image, fg image.Image, character image.Image) {
-	imgFile1, err := os.Open(bgpath)
+func GetImage(path string) (img image.Image) {
+	imgFile1, err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
+	}
+	img, err = png.Decode(imgFile1)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	return img
+}
+
+func GetImages(bgpath, fgpath, characterpath string) (bg image.Image, fg image.Image, character image.Image, err error) {
+	imgFile1, err := os.Open(bgpath)
+	if err != nil {
+		return nil, nil, nil, err
 	}
 	imgFile2, err := os.Open(fgpath)
 	if err != nil {
-		fmt.Println(err)
+		return nil, nil, nil, err
 	}
 	imgFile3, err := os.Open(characterpath)
 	if err != nil {
-		fmt.Println(err)
+		return nil, nil, nil, err
 	}
 	bg, err = jpeg.Decode(imgFile1)
 	if err != nil {
-		fmt.Println(err)
+		return nil, nil, nil, err
 	}
 	fg, err = png.Decode(imgFile2)
 	if err != nil {
-		fmt.Println(err)
+		return nil, nil, nil, err
 	}
 	character, err = png.Decode(imgFile3)
 	if err != nil {
-		fmt.Println(err)
+		return nil, nil, nil, err
 	}
-	return bg, fg, character
+	return bg, fg, character, nil
 }
 
 func randomDialouge(frame Frame) Frame {
