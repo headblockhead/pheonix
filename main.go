@@ -309,7 +309,18 @@ func main() {
 			fmt.Println("Error assembling image: ", err)
 			os.Exit(1)
 		}
-		saveImage(finalimage, "image"+fmt.Sprintf("%d", i)+".jpg")
+
+		boximage := GetImage("images/speech_box/box.png")
+
+		finalimagetext, err := combineImages(finalimage, boximage)
+		if err != nil {
+			fmt.Println("Error assembling image: ", err)
+			os.Exit(1)
+		}
+		if scene.frames[i].character.characterType == "C" {
+			finalimagetext = finalimage
+		}
+		saveImage(finalimagetext, "image"+fmt.Sprintf("%d", i)+".jpg")
 	}
 }
 
