@@ -338,7 +338,7 @@ func addLabel(img *image.RGBA, x, y int, label string) {
 	d := &font.Drawer{
 		Dst:  img,
 		Src:  image.NewUniform(col),
-		Face: basicfont.Face7x13,
+		Face: &basicfont.Face{},
 		Dot:  point,
 	}
 	d.DrawString(label)
@@ -472,8 +472,8 @@ func getPathsFromFrame(frame Frame) (bg string, fg string, character string) {
 
 func combineImages(img1 image.Image, img2 image.Image) (image.Image, error) {
 	rgba := image.NewRGBA(img1.Bounds())
-	draw.Draw(rgba, rgba.Bounds(), img1, image.ZP, draw.Over)
-	draw.Draw(rgba, rgba.Bounds(), img2, image.ZP, draw.Over)
+	draw.Draw(rgba, rgba.Bounds(), img1, image.Point{0, 0}, draw.Over)
+	draw.Draw(rgba, rgba.Bounds(), img2, image.Point{0, 0}, draw.Over)
 	return rgba, nil
 }
 
