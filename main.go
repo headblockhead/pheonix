@@ -11,6 +11,8 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
+	"time"
 
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
@@ -226,14 +228,26 @@ func main() {
 	var seed string
 	fmt.Printf("Enter a seed: ")
 	fmt.Scanln(&seed)
+
 	seedBytes := []byte(seed)
-	var finalSeed int
-	for i := 0; i < len(seedBytes); i++ {
-		finalSeed += int(seedBytes[i])
+
+	finalSeed := getSeedFromBytes(seedBytes)
+
+	if _, err := strconv.Atoi(seed); err == nil {
+		finalSeed, _ = strconv.Atoi(seed)
 	}
+
 	scene := Scene{seed: finalSeed, frames: []Frame{frame1, frame2, frame3, frame4}}
 
-	rand.Seed(int64(scene.seed))
+	if len(seed) > 0 {
+		rand.Seed(int64(scene.seed))
+	} else {
+		seed = fmt.Sprint(time.Now().UTC().UnixNano())
+		seedBytes := []byte(seed)
+		finalSeed := getSeedFromBytes(seedBytes)
+		scene.seed = finalSeed
+		rand.Seed(int64(scene.seed))
+	}
 	randomPattern := rand.Intn(len(patterns))
 	chosenPattern := patterns[randomPattern]
 	scene.pattern = chosenPattern
@@ -330,6 +344,14 @@ func main() {
 			saveImage(finalImage, "image"+fmt.Sprintf("%d", i)+".jpg")
 		}
 	}
+}
+
+func getSeedFromBytes(bytes []byte) (seed int) {
+	seed = 1
+	for i := 0; i < len(bytes); i++ {
+		seed *= int(bytes[i])
+	}
+	return seed
 }
 
 func addLabel(img *image.RGBA, x, y int, label string) {
