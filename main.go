@@ -4,12 +4,17 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"image/color"
 	"image/draw"
 	"image/jpeg"
 	"image/png"
 	"log"
 	"math/rand"
 	"os"
+
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/math/fixed"
 )
 
 type Scene struct {
@@ -297,31 +302,46 @@ func main() {
 		saveImage(objectionImage, "objection"+fmt.Sprintf("%d", scene.objection.objectionLocation)+".jpg")
 	}
 	for i := 0; i < len(scene.frames); i++ {
-		bgpath, fgpath, characterpath := getPathsFromFrame(scene.frames[i])
-		bgimage, fgimage, characterimage, err := GetImages(bgpath, fgpath, characterpath)
+		bgPath, fgPath, characterPath := getPathsFromFrame(scene.frames[i])
+		bgImage, fgImage, characterImage, err := GetImages(bgPath, fgPath, characterPath)
 		if err != nil {
 			fmt.Println("Error getting images: ", err)
-			fmt.Println("Paths: ", bgpath, fgpath, characterpath)
+			fmt.Println("Paths: ", bgPath, fgPath, characterPath)
 			os.Exit(1)
 		}
-		finalimage, err := AssembleImage(bgimage, fgimage, characterimage)
+		finalImage, err := AssembleImage(bgImage, fgImage, characterImage)
 		if err != nil {
 			fmt.Println("Error assembling image: ", err)
 			os.Exit(1)
 		}
 
-		boximage := GetImage("images/speech_box/box.png")
-
-		finalimagetext, err := combineImages(finalimage, boximage)
+		boxImage := GetImage("images/speech_box/box.png")
+		textBoxAddedImage, err := combineImages(finalImage, boxImage)
 		if err != nil {
 			fmt.Println("Error assembling image: ", err)
 			os.Exit(1)
 		}
+		b := textBoxAddedImage.Bounds()
+		m := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
+		draw.Draw(m, m.Bounds(), textBoxAddedImage, b.Min, draw.Src)
+		addLabel(m, 0, 0, "this is a long pielce of text hjadadiuyiu")
+		saveImage(m, "image"+fmt.Sprintf("%d", i)+".jpg")
 		if scene.frames[i].character.characterType == "C" {
-			finalimagetext = finalimage
+			saveImage(finalImage, "image"+fmt.Sprintf("%d", i)+".jpg")
 		}
-		saveImage(finalimagetext, "image"+fmt.Sprintf("%d", i)+".jpg")
 	}
+}
+
+func addLabel(img *image.RGBA, x, y int, label string) {
+	col := color.RGBA{200, 100, 0, 255}
+	point := fixed.Point26_6{fixed.I(x), fixed.I(y)}
+	d := &font.Drawer{
+		Dst:  img,
+		Src:  image.NewUniform(col),
+		Face: basicfont.Face7x13,
+		Dot:  point,
+	}
+	d.DrawString(label)
 }
 
 func getObjectionFramePath(objection Objection) (path string, err error) {
