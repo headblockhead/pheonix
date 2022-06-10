@@ -38,7 +38,12 @@ func NewCdkStack(scope constructs.Construct, id string, props *CdkStackProps) aw
 			"AWS_XRAY_CONTEXT_MISSING": jsii.String("IGNORE_ERROR"),
 		},
 	})
-	f.AddFunctionUrl(&awslambda.FunctionUrlOptions{})
+	f.AddFunctionUrl(&awslambda.FunctionUrlOptions{
+		AuthType: awslambda.FunctionUrlAuthType_NONE,
+		Cors: &awslambda.FunctionUrlCorsOptions{
+			AllowedOrigins: jsii.Strings("*"),
+		},
+	})
 	return stack
 }
 
