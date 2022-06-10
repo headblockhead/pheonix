@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"errors"
 	"fmt"
 	"image"
@@ -18,6 +19,9 @@ import (
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/image/math/fixed"
 )
+
+//go:embed images
+var images embed.FS
 
 type Scene struct {
 	seed           int
@@ -226,8 +230,7 @@ func main() {
 	frame4 := Frame{id: 3}
 
 	var seed string
-	fmt.Printf("Enter a seed: ")
-	fmt.Scanln(&seed)
+	seed = os.Getenv("SEED")
 
 	seedBytes := []byte(seed)
 
@@ -306,6 +309,8 @@ func main() {
 		scene.frames[i] = randomDialouge(scene.frames[i])
 	}
 	fmt.Println(scene)
+	writer, _ := os.Create("scene.txt")
+	writer.Write([]byte(fmt.Sprintf("%v", scene)))
 	if scene.objection.objectionActive {
 		objectionPath, err := getObjectionFramePath(scene.objection)
 		if err != nil {
@@ -368,11 +373,11 @@ func addLabel(img *image.RGBA, x, y int, label string) {
 
 func getObjectionFramePath(objection Objection) (path string, err error) {
 	if objection.objectionType == "Objection" {
-		path = "./images/speech_bub/objection.png"
+		path = "images/speech_bub/objection.png"
 	} else if objection.objectionType == "TakeThat" {
-		path = "./images/speech_bub/takethat.png"
+		path = "images/speech_bub/takethat.png"
 	} else if objection.objectionType == "HoldIt" {
-		path = "./images/speech_bub/hold_it.png"
+		path = "images/speech_bub/hold_it.png"
 	} else {
 		return "", errors.New("no objections active")
 	}
@@ -392,101 +397,101 @@ func saveImage(img image.Image, path string) {
 
 func getPathsFromFrame(frame Frame) (bg string, fg string, character string) {
 	if frame.character.characterType == "D" {
-		bg = "./images/background/defence.jpg"
-		fg = "./images/foreground/defence.png"
+		bg = "images/background/defence.jpg"
+		fg = "images/foreground/defence.png"
 		if frame.character.expression.ID == "think" {
-			character = "./images/poses/defence/think.png"
+			character = "images/poses/defence/think.png"
 		}
 		if frame.character.expression.ID == "angry" {
-			character = "./images/poses/defence/desk_slam.png"
+			character = "images/poses/defence/desk_slam.png"
 		}
 		if frame.character.expression.ID == "confident" {
-			character = "./images/poses/defence/confident.png"
+			character = "images/poses/defence/confident.png"
 		}
 		if frame.character.expression.ID == "read" {
-			character = "./images/poses/defence/read.png"
+			character = "images/poses/defence/read.png"
 		}
 		if frame.character.expression.ID == "point" {
-			character = "./images/poses/defence/point.png"
+			character = "images/poses/defence/point.png"
 		}
 		if frame.character.expression.ID == "deskSlam" {
-			character = "./images/poses/defence/desk_slam.png"
+			character = "images/poses/defence/desk_slam.png"
 		}
 		if frame.character.expression.ID == "silly" {
-			character = "./images/poses/defence/silly.png"
+			character = "images/poses/defence/silly.png"
 		}
 		if frame.character.expression.ID == "breakdown" {
-			character = "./images/poses/defence/breakdown.png"
+			character = "images/poses/defence/breakdown.png"
 		}
 		if frame.character.expression.ID == "coffe" {
-			character = "./images/poses/defence/coffe.png"
+			character = "images/poses/defence/coffe.png"
 		}
 	}
 	if frame.character.characterType == "P" {
-		bg = "./images/background/prosecution.jpg"
-		fg = "./images/foreground/prosecution.png"
+		bg = "images/background/prosecution.jpg"
+		fg = "images/foreground/prosecution.png"
 		if frame.character.expression.ID == "arms" {
-			character = "./images/poses/prosecution/arms.png"
+			character = "images/poses/prosecution/arms.png"
 		}
 		if frame.character.expression.ID == "confident" {
-			character = "./images/poses/prosecution/confident.png"
+			character = "images/poses/prosecution/confident.png"
 		}
 		if frame.character.expression.ID == "read" {
-			character = "./images/poses/prosecution/read.png"
+			character = "images/poses/prosecution/read.png"
 		}
 		if frame.character.expression.ID == "cornered" {
-			character = "./images/poses/prosecution/cornered.png"
+			character = "images/poses/prosecution/cornered.png"
 		}
 		if frame.character.expression.ID == "deskSlam" {
-			character = "./images/poses/prosecution/deskslam.png"
+			character = "images/poses/prosecution/deskslam.png"
 		}
 		if frame.character.expression.ID == "point" {
-			character = "./images/poses/prosecution/point.png"
+			character = "images/poses/prosecution/point.png"
 		}
 		if frame.character.expression.ID == "stand" {
-			character = "./images/poses/prosecution/stand.png"
+			character = "images/poses/prosecution/stand.png"
 		}
 	}
 	if frame.character.characterType == "J" {
-		bg = "./images/background/judge.jpg"
-		fg = "./images/foreground/judge.png"
+		bg = "images/background/judge.jpg"
+		fg = "images/foreground/judge.png"
 		if frame.character.expression.ID == "stand" {
-			character = "./images/poses/judge/stand.png"
+			character = "images/poses/judge/stand.png"
 		}
 		if frame.character.expression.ID == "angry" {
-			character = "./images/poses/judge/angry.png"
+			character = "images/poses/judge/angry.png"
 		}
 		if frame.character.expression.ID == "surprise" {
-			character = "./images/poses/judge/surprise.png"
+			character = "images/poses/judge/surprise.png"
 		}
 	}
 	if frame.character.characterType == "W" {
-		bg = "./images/background/witness.jpg"
-		fg = "./images/foreground/witness.png"
+		bg = "images/background/witness.jpg"
+		fg = "images/foreground/witness.png"
 		if frame.character.name == "Cody Hackins" {
-			character = "./images/poses/witness/cody.png"
+			character = "images/poses/witness/cody.png"
 		}
 		if frame.character.name == "De Vasquez" {
-			character = "./images/poses/witness/des.png"
+			character = "images/poses/witness/des.png"
 		}
 		if frame.character.name == "Detective Gumshoe" {
-			character = "./images/poses/witness/detective.png"
+			character = "images/poses/witness/detective.png"
 		}
 		if frame.character.name == "Godot" {
-			character = "./images/poses/witness/godot.png"
+			character = "images/poses/witness/godot.png"
 		}
 		if frame.character.name == "Larry Butz" {
-			character = "./images/poses/witness/larry.png"
+			character = "images/poses/witness/larry.png"
 		}
 		if frame.character.name == "Yanni Yogi" {
-			character = "./images/poses/witness/yanni.png"
+			character = "images/poses/witness/yanni.png"
 		}
 	}
 	if frame.character.characterType == "C" {
-		bg = "./images/background/gallery.jpg"
-		fg = "./images/foreground/gallery.png"
+		bg = "images/background/gallery.jpg"
+		fg = "images/foreground/gallery.png"
 		if frame.character.name == "Crowd" {
-			character = "./images/poses/crowd/blank.png"
+			character = "images/poses/crowd/blank.png"
 		}
 	}
 	return bg, fg, character
@@ -512,7 +517,7 @@ func AssembleImage(bg image.Image, fg image.Image, character image.Image) (img i
 }
 
 func GetImage(path string) (img image.Image) {
-	imgFile1, err := os.Open(path)
+	imgFile1, err := images.Open(path)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -526,15 +531,15 @@ func GetImage(path string) (img image.Image) {
 }
 
 func GetImages(bgpath, fgpath, characterpath string) (bg image.Image, fg image.Image, character image.Image, err error) {
-	imgFile1, err := os.Open(bgpath)
+	imgFile1, err := images.Open(bgpath)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	imgFile2, err := os.Open(fgpath)
+	imgFile2, err := images.Open(fgpath)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	imgFile3, err := os.Open(characterpath)
+	imgFile3, err := images.Open(characterpath)
 	if err != nil {
 		return nil, nil, nil, err
 	}
