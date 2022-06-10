@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	http.Handle("/hello", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, "Hello")
 	}))
 	awsapigatewayv2handler.ListenAndServe(http.DefaultServeMux)
