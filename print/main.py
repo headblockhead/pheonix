@@ -61,7 +61,7 @@ if print_mode == 'decode':
     log = []
     for i in range(len(data)):
         if i % 2 == 0:
-            sleep(1.5)
+            sleep(2)
         if (type(data[i]) == int):
             log.append("Break: " + str(data[i]) + '\n')
             print("Break: " + str(data[i]) + '\n')
