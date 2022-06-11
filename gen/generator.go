@@ -315,8 +315,9 @@ func Generate(seed int) (frames []image.Image, objection image.Image, err error)
 			os.Exit(1)
 		}
 		if scene.frames[i].character.characterType == "C" {
-			frames = append(frames, textBoxAddedImage)
+			textBoxAddedImage = finalImage
 		}
+		frames = append(frames, textBoxAddedImage)
 	}
 	return
 }
