@@ -1,4 +1,4 @@
-package main
+package gen
 
 import (
 	"embed"
@@ -9,11 +9,8 @@ import (
 	"image/draw"
 	"image/jpeg"
 	"image/png"
-	"log"
 	"math/rand"
 	"os"
-	"strconv"
-	"time"
 
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
@@ -75,7 +72,7 @@ type Expression struct {
 	Emotion string
 }
 
-func main() {
+func Generate(seed int) (frames []image.Image, objection image.Image, err error) {
 	pattern1 := Pattern{frametypes: []string{"D", "P", "D", "C"}, id: 1}
 	pattern2 := Pattern{frametypes: []string{"D", "J", "P", "J"}, id: 2}
 	pattern3 := Pattern{frametypes: []string{"D", "W", "D", "W"}, id: 3}
@@ -170,21 +167,21 @@ func main() {
 	expressionStandJudge := Expression{ID: "stand", Emotion: "Default"}
 	expressionAngryJudge := Expression{ID: "angry", Emotion: "Accusation"}
 	expressionSurpriseJudge := Expression{ID: "surprise", Emotion: "Panic"}
-	JudgeExpressions := []Expression{expressionStandJudge, expressionAngryJudge, expressionSurpriseJudge}
+	judgeExpressions := []Expression{expressionStandJudge, expressionAngryJudge, expressionSurpriseJudge}
 
-	JudgeExpressionsDefault := []Expression{}
-	JudgeExpressionsAccusation := []Expression{}
-	JudgeExpressionsPanic := []Expression{}
+	judgeExpressionsDefault := []Expression{}
+	judgeExpressionsAccusation := []Expression{}
+	judgeExpressionsPanic := []Expression{}
 
-	for i := 0; i < len(JudgeExpressions); i++ {
-		if JudgeExpressions[i].Emotion == "Default" {
-			JudgeExpressionsDefault = append(JudgeExpressionsDefault, JudgeExpressions[i])
+	for i := 0; i < len(judgeExpressions); i++ {
+		if judgeExpressions[i].Emotion == "Default" {
+			judgeExpressionsDefault = append(judgeExpressionsDefault, judgeExpressions[i])
 		}
-		if JudgeExpressions[i].Emotion == "Accusation" {
-			JudgeExpressionsAccusation = append(JudgeExpressionsAccusation, JudgeExpressions[i])
+		if judgeExpressions[i].Emotion == "Accusation" {
+			judgeExpressionsAccusation = append(judgeExpressionsAccusation, judgeExpressions[i])
 		}
-		if JudgeExpressions[i].Emotion == "Panic" {
-			JudgeExpressionsPanic = append(JudgeExpressionsPanic, JudgeExpressions[i])
+		if judgeExpressions[i].Emotion == "Panic" {
+			judgeExpressionsPanic = append(judgeExpressionsPanic, judgeExpressions[i])
 		}
 
 	}
@@ -229,28 +226,8 @@ func main() {
 	frame3 := Frame{id: 2}
 	frame4 := Frame{id: 3}
 
-	var seed string
-	seed = os.Getenv("SEED")
-
-	seedBytes := []byte(seed)
-
-	finalSeed := getSeedFromBytes(seedBytes)
-
-	if _, err := strconv.Atoi(seed); err == nil {
-		finalSeed, _ = strconv.Atoi(seed)
-	}
-
-	scene := Scene{seed: finalSeed, frames: []Frame{frame1, frame2, frame3, frame4}}
-
-	if len(seed) > 0 {
-		rand.Seed(int64(scene.seed))
-	} else {
-		seed = fmt.Sprint(time.Now().UTC().UnixNano())
-		seedBytes := []byte(seed)
-		finalSeed := getSeedFromBytes(seedBytes)
-		scene.seed = finalSeed
-		rand.Seed(int64(scene.seed))
-	}
+	scene := Scene{seed: seed, frames: []Frame{frame1, frame2, frame3, frame4}}
+	rand.Seed(int64(scene.seed))
 	randomPattern := rand.Intn(len(patterns))
 	chosenPattern := patterns[randomPattern]
 	scene.pattern = chosenPattern
@@ -277,10 +254,10 @@ func main() {
 	frame3 = RandomFrameCharacter(frame3, charactersD, charactersP, charactersJ, charactersW, charactersC)
 	frame4 = RandomFrameCharacter(frame4, charactersD, charactersP, charactersJ, charactersW, charactersC)
 
-	frame1 = setExpressions(frame1, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
-	frame2 = setExpressions(frame2, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
-	frame3 = setExpressions(frame3, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
-	frame4 = setExpressions(frame4, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, JudgeExpressionsDefault, JudgeExpressionsPanic, JudgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, JudgeExpressionsAccusation)
+	frame1 = setExpressions(frame1, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
+	frame2 = setExpressions(frame2, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
+	frame3 = setExpressions(frame3, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
+	frame4 = setExpressions(frame4, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
 
 	scene.frames[0] = frame1
 	scene.frames[1] = frame2
@@ -309,16 +286,13 @@ func main() {
 		scene.frames[i] = randomDialouge(scene.frames[i])
 	}
 	fmt.Println(scene)
-	writer, _ := os.Create("scene.txt")
-	writer.Write([]byte(fmt.Sprintf("%v", scene)))
 	if scene.objection.objectionActive {
 		objectionPath, err := getObjectionFramePath(scene.objection)
 		if err != nil {
 			fmt.Println("Error getting objection path: ", err)
 			os.Exit(1)
 		}
-		objectionImage := GetImage(objectionPath)
-		saveImage(objectionImage, "objection"+fmt.Sprintf("%d", scene.objection.objectionLocation)+".jpg")
+		objection = GetImage(objectionPath)
 	}
 	for i := 0; i < len(scene.frames); i++ {
 		bgPath, fgPath, characterPath := getPathsFromFrame(scene.frames[i])
@@ -340,15 +314,11 @@ func main() {
 			fmt.Println("Error assembling image: ", err)
 			os.Exit(1)
 		}
-		b := textBoxAddedImage.Bounds()
-		m := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
-		draw.Draw(m, m.Bounds(), textBoxAddedImage, b.Min, draw.Src)
-		addLabel(m, 0, 0, "this is a long pielce of text hjadadiuyiu")
-		saveImage(m, "image"+fmt.Sprintf("%d", i)+".jpg")
 		if scene.frames[i].character.characterType == "C" {
-			saveImage(finalImage, "image"+fmt.Sprintf("%d", i)+".jpg")
+			frames = append(frames, textBoxAddedImage)
 		}
 	}
+	return
 }
 
 func getSeedFromBytes(bytes []byte) (seed int) {
@@ -382,17 +352,6 @@ func getObjectionFramePath(objection Objection) (path string, err error) {
 		return "", errors.New("no objections active")
 	}
 	return path, nil
-}
-
-func saveImage(img image.Image, path string) {
-	f, err := os.Create(path)
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	if err = jpeg.Encode(f, img, nil); err != nil {
-		log.Printf("failed to encode: %v", err)
-	}
 }
 
 func getPathsFromFrame(frame Frame) (bg string, fg string, character string) {
