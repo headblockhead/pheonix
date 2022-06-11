@@ -1,15 +1,12 @@
 package main
 
 import (
-	"io"
 	"net/http"
 
 	"github.com/a-h/awsapigatewayv2handler"
+	"github.com/headblockhead/phoenix/handler"
 )
 
 func main() {
-	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Hello")
-	}))
-	awsapigatewayv2handler.ListenAndServe(http.DefaultServeMux)
+	awsapigatewayv2handler.ListenAndServe(http.HandlerFunc(handler.Handle))
 }

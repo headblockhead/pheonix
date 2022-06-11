@@ -1,4 +1,4 @@
-module github.com/headblockhead/random_pheonix_wright
+module github.com/headblockhead/phoenix
 
 go 1.17
 
@@ -8,6 +8,7 @@ require (
 )
 
 require (
+	github.com/akrylysov/algnhsa v0.12.1 // indirect
 	github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2 v2.27.0-alpha.0 // indirect
 	github.com/aws/aws-lambda-go v1.27.0 // indirect
 	github.com/aws/constructs-go/constructs/v3 v3.4.6 // indirect

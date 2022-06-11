@@ -3,12 +3,15 @@ github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030I
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/a-h/awsapigatewayv2handler v0.0.0-20220411143738-79bfb034bec6 h1:WK+FbTUxon/FO0SzyFoyYUK2x414i22eWZxwx2b9Nos=
 github.com/a-h/awsapigatewayv2handler v0.0.0-20220411143738-79bfb034bec6/go.mod h1:AEl2QgRNtDvkYB2kZWR0bnmDmVwt+2JnhmyzV3oShJo=
+github.com/akrylysov/algnhsa v0.12.1 h1:A9Ojt4hZrL77mhBc3qGO3Sn9reyf+tvM3DmR0SfXguc=
+github.com/akrylysov/algnhsa v0.12.1/go.mod h1:xAcJ/X8DV+81e+dUjIoB/r5CbISrSXV9//leoMDHcdk=
 github.com/aws/aws-cdk-go/awscdk v1.159.0-devpreview h1:7oDaAZJlxPv8bXCYVdR2JnjfPNqnQ9IuocpG/u4ZjiA=
 github.com/aws/aws-cdk-go/awscdk v1.159.0-devpreview/go.mod h1:pYso/l0CNqxbPCestQr9G+4r4JoWMnmfPD/TsODAifg=
 github.com/aws/aws-cdk-go/awscdk/v2 v2.27.0 h1:z9RQ7H/hxC9vch0hk4PzbAEuNkIPwq0EPyrjvs0fyXE=
 github.com/aws/aws-cdk-go/awscdk/v2 v2.27.0/go.mod h1:7XCtayiRILOHD/BkEyvxuqdrAHBt6dMXhSNcLm0ihU8=
 github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2 v2.27.0-alpha.0 h1:0J6STwzFwkmkCDN5aeJ3GP5zcteVeTTcKuN66aFPCJA=
 github.com/aws/aws-cdk-go/awscdklambdagoalpha/v2 v2.27.0-alpha.0/go.mod h1:nn2E473zZsWkqIj8wHlXPOZvqbFls4cXIk6M9hxgjN4=
+github.com/aws/aws-lambda-go v1.9.0/go.mod h1:zUsUQhAUjYzR8AuduJPCfhBuKWUaDbQiPOG+ouzmE1A=
 github.com/aws/aws-lambda-go v1.27.0 h1:aLzrJwdyHoF1A18YeVdJjX8Ixkd+bpogdxVInvHcWjM=
 github.com/aws/aws-lambda-go v1.27.0/go.mod h1:jJmlefzPfGnckuHdXX7/80O3BvUUi12XOkbv4w9SGLU=
 github.com/aws/constructs-go/constructs/v10 v10.0.9/go.mod h1:RC6w8bOwxLmPX7Jfo9dkEZ9iVfgH4QnaVnfWvaNOHy0=
@@ -28,6 +31,7 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
+github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
