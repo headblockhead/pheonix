@@ -105,34 +105,34 @@ func Generate(seed int) (frames []image.Image, objection image.Image, err error)
 	emotion_pattern5_pattern3 := EmotionPattern{emotionTypes: []string{"Accusation", "Default", "Default", "Panic"}, pattern: pattern5}
 	emotions_pattern5 := []EmotionPattern{emotion_pattern5_pattern1, emotion_pattern5_pattern2, emotion_pattern5_pattern3}
 
-	expressionThinkPheonix := Expression{ID: "think", Emotion: "Confident"}
-	expressionConfidentPheonix := Expression{ID: "confident", Emotion: "Confident"}
-	expressionReadPheonix := Expression{ID: "read", Emotion: "Confident"}
-	expressionPointPheonix := Expression{ID: "point", Emotion: "Accusation"}
-	expressionDeskSlamPheonix := Expression{ID: "deskSlam", Emotion: "Accusation"}
-	expressionCorneredPheonix := Expression{ID: "cornered", Emotion: "Panic"}
-	expressionSillyPheonix := Expression{ID: "silly", Emotion: "Panic"}
-	expressionBrekdownPheonix := Expression{ID: "brekdown", Emotion: "Panic"}
-	expressionCoffePheonix := Expression{ID: "coffe", Emotion: "Sad"}
-	PheonixExpressions := []Expression{expressionThinkPheonix, expressionConfidentPheonix, expressionReadPheonix, expressionPointPheonix, expressionDeskSlamPheonix, expressionCorneredPheonix, expressionSillyPheonix, expressionBrekdownPheonix, expressionCoffePheonix}
+	expressionThinkPhoenix := Expression{ID: "think", Emotion: "Confident"}
+	expressionConfidentPhoenix := Expression{ID: "confident", Emotion: "Confident"}
+	expressionReadPhoenix := Expression{ID: "read", Emotion: "Confident"}
+	expressionPointPhoenix := Expression{ID: "point", Emotion: "Accusation"}
+	expressionDeskSlamPhoenix := Expression{ID: "deskSlam", Emotion: "Accusation"}
+	expressionCorneredPhoenix := Expression{ID: "cornered", Emotion: "Panic"}
+	expressionSillyPhoenix := Expression{ID: "silly", Emotion: "Panic"}
+	expressionBrekdownPhoenix := Expression{ID: "brekdown", Emotion: "Panic"}
+	expressionCoffePhoenix := Expression{ID: "coffe", Emotion: "Sad"}
+	PhoenixExpressions := []Expression{expressionThinkPhoenix, expressionConfidentPhoenix, expressionReadPhoenix, expressionPointPhoenix, expressionDeskSlamPhoenix, expressionCorneredPhoenix, expressionSillyPhoenix, expressionBrekdownPhoenix, expressionCoffePhoenix}
 
-	PheonixExpressionsConfident := []Expression{}
-	PheonixExpressionsPanic := []Expression{}
-	PheonixExpressionsAccusation := []Expression{}
-	PheonixExpressionsSad := []Expression{}
+	PhoenixExpressionsConfident := []Expression{}
+	PhoenixExpressionsPanic := []Expression{}
+	PhoenixExpressionsAccusation := []Expression{}
+	PhoenixExpressionsSad := []Expression{}
 
-	for i := 0; i < len(PheonixExpressions); i++ {
-		if PheonixExpressions[i].Emotion == "Confident" {
-			PheonixExpressionsConfident = append(PheonixExpressionsConfident, PheonixExpressions[i])
+	for i := 0; i < len(PhoenixExpressions); i++ {
+		if PhoenixExpressions[i].Emotion == "Confident" {
+			PhoenixExpressionsConfident = append(PhoenixExpressionsConfident, PhoenixExpressions[i])
 		}
-		if PheonixExpressions[i].Emotion == "Panic" {
-			PheonixExpressionsPanic = append(PheonixExpressionsPanic, PheonixExpressions[i])
+		if PhoenixExpressions[i].Emotion == "Panic" {
+			PhoenixExpressionsPanic = append(PhoenixExpressionsPanic, PhoenixExpressions[i])
 		}
-		if PheonixExpressions[i].Emotion == "Accusation" {
-			PheonixExpressionsAccusation = append(PheonixExpressionsAccusation, PheonixExpressions[i])
+		if PhoenixExpressions[i].Emotion == "Accusation" {
+			PhoenixExpressionsAccusation = append(PhoenixExpressionsAccusation, PhoenixExpressions[i])
 		}
-		if PheonixExpressions[i].Emotion == "Sad" {
-			PheonixExpressionsSad = append(PheonixExpressionsSad, PheonixExpressions[i])
+		if PhoenixExpressions[i].Emotion == "Sad" {
+			PhoenixExpressionsSad = append(PhoenixExpressionsSad, PhoenixExpressions[i])
 		}
 	}
 
@@ -186,7 +186,7 @@ func Generate(seed int) (frames []image.Image, objection image.Image, err error)
 
 	}
 
-	character1 := Character{characterType: "D", name: "Pheonix Wright"}
+	character1 := Character{characterType: "D", name: "Phoenix Wright"}
 	character2 := Character{characterType: "P", name: "Edgeworth"}
 	character3 := Character{characterType: "J", name: "Judge"}
 	character4 := Character{characterType: "W", name: "Cody Hackins"}
@@ -254,10 +254,10 @@ func Generate(seed int) (frames []image.Image, objection image.Image, err error)
 	frame3 = RandomFrameCharacter(frame3, charactersD, charactersP, charactersJ, charactersW, charactersC)
 	frame4 = RandomFrameCharacter(frame4, charactersD, charactersP, charactersJ, charactersW, charactersC)
 
-	frame1 = setExpressions(frame1, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
-	frame2 = setExpressions(frame2, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
-	frame3 = setExpressions(frame3, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
-	frame4 = setExpressions(frame4, scene, PheonixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PheonixExpressionsAccusation, PheonixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
+	frame1 = setExpressions(frame1, scene, PhoenixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PhoenixExpressionsAccusation, PhoenixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
+	frame2 = setExpressions(frame2, scene, PhoenixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PhoenixExpressionsAccusation, PhoenixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
+	frame3 = setExpressions(frame3, scene, PhoenixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PhoenixExpressionsAccusation, PhoenixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
+	frame4 = setExpressions(frame4, scene, PhoenixExpressionsConfident, EdgeworthExpressionsConfident, EdgeworthExpressionsDefault, judgeExpressionsDefault, judgeExpressionsPanic, judgeExpressionsAccusation, PhoenixExpressionsAccusation, PhoenixExpressionsSad, EdgeworthExpressionsPanic, EdgeworthExpressionsAccusation, judgeExpressionsAccusation)
 
 	scene.frames[0] = frame1
 	scene.frames[1] = frame2
@@ -519,37 +519,37 @@ func GetImages(bgpath, fgpath, characterpath string) (bg image.Image, fg image.I
 }
 
 func randomDialouge(frame Frame) Frame {
-	pheonixConfidentDialouge1 := "That is correct."
-	pheonixConfidentDialouge2 := "I have evidence to back that up!"
-	pheonixConfidentDialouge3 := "There is no problem here."
-	pheonixConfidentDialouge4 := "There is no problem with that."
-	pheonixConfidentDialouge5 := "That makes no difference."
-	pheonixConfidentDialouge6 := "Just as I thought!"
-	pheonixConfidentDialouge7 := "I was right!"
-	pheonixConfidentDialouge8 := "I knew it!"
-	pheonixConfidentDialouges := []string{pheonixConfidentDialouge1, pheonixConfidentDialouge2, pheonixConfidentDialouge3, pheonixConfidentDialouge4, pheonixConfidentDialouge5, pheonixConfidentDialouge6, pheonixConfidentDialouge7, pheonixConfidentDialouge8}
-	pheonixAccusationDialouge1 := "I have evidence that proves the defendant was not at the scene of the crime!"
-	pheonixAccusationDialouge2 := "You were not inside the boat!"
-	pheonixAccusationDialouge3 := "That is not correct!"
-	pheonixAccusationDialouge4 := "You are wrong!"
-	pheonixAccusationDialouge5 := "The prosection is lying!"
-	pheonixAccusationDialouge6 := "There is a vital piece of evidence missing!"
-	pheonixAccusationDialouge7 := "You are not correct!"
-	pheonixAccusationDialouge8 := "There is not enough evidence!"
-	pheonixAccusationDialouges := []string{pheonixAccusationDialouge1, pheonixAccusationDialouge2, pheonixAccusationDialouge3, pheonixAccusationDialouge4, pheonixAccusationDialouge5, pheonixAccusationDialouge6, pheonixAccusationDialouge7, pheonixAccusationDialouge8}
-	pheonixSadDialouge1 := "Ouch! That hurt!"
-	pheonixSadDialouge2 := "Oww.. that burns!"
-	pheonixSadDialouge3 := "Hey!"
-	pheonixSadDialouges := []string{pheonixSadDialouge1, pheonixSadDialouge2, pheonixSadDialouge3}
-	pheonixPanicDialouge1 := "I.. Uhhh Ummm (How do I get out of this one?)"
-	pheonixPanicDialouge2 := "(Urk.)"
-	pheonixPanicDialouge3 := "(uh-oh)"
-	pheonixPanicDialouge4 := "(oops)"
-	pheonixPanicDialouge5 := "(oh no!)"
-	pheonixPanicDialouge6 := "(How do I get out of this?)"
-	pheonixPanicDialouge7 := "(This isn't going well!)"
-	pheonixPanicDialouge8 := "Uhhhh... Ummmm... (oh-no!)"
-	pheonixPanicDialouges := []string{pheonixPanicDialouge1, pheonixPanicDialouge2, pheonixPanicDialouge3, pheonixPanicDialouge4, pheonixPanicDialouge5, pheonixPanicDialouge6, pheonixPanicDialouge7, pheonixPanicDialouge8}
+	phoenixConfidentDialouge1 := "That is correct."
+	phoenixConfidentDialouge2 := "I have evidence to back that up!"
+	phoenixConfidentDialouge3 := "There is no problem here."
+	phoenixConfidentDialouge4 := "There is no problem with that."
+	phoenixConfidentDialouge5 := "That makes no difference."
+	phoenixConfidentDialouge6 := "Just as I thought!"
+	phoenixConfidentDialouge7 := "I was right!"
+	phoenixConfidentDialouge8 := "I knew it!"
+	phoenixConfidentDialouges := []string{phoenixConfidentDialouge1, phoenixConfidentDialouge2, phoenixConfidentDialouge3, phoenixConfidentDialouge4, phoenixConfidentDialouge5, phoenixConfidentDialouge6, phoenixConfidentDialouge7, phoenixConfidentDialouge8}
+	phoenixAccusationDialouge1 := "I have evidence that proves the defendant was not at the scene of the crime!"
+	phoenixAccusationDialouge2 := "You were not inside the boat!"
+	phoenixAccusationDialouge3 := "That is not correct!"
+	phoenixAccusationDialouge4 := "You are wrong!"
+	phoenixAccusationDialouge5 := "The prosection is lying!"
+	phoenixAccusationDialouge6 := "There is a vital piece of evidence missing!"
+	phoenixAccusationDialouge7 := "You are not correct!"
+	phoenixAccusationDialouge8 := "There is not enough evidence!"
+	phoenixAccusationDialouges := []string{phoenixAccusationDialouge1, phoenixAccusationDialouge2, phoenixAccusationDialouge3, phoenixAccusationDialouge4, phoenixAccusationDialouge5, phoenixAccusationDialouge6, phoenixAccusationDialouge7, phoenixAccusationDialouge8}
+	phoenixSadDialouge1 := "Ouch! That hurt!"
+	phoenixSadDialouge2 := "Oww.. that burns!"
+	phoenixSadDialouge3 := "Hey!"
+	phoenixSadDialouges := []string{phoenixSadDialouge1, phoenixSadDialouge2, phoenixSadDialouge3}
+	phoenixPanicDialouge1 := "I.. Uhhh Ummm (How do I get out of this one?)"
+	phoenixPanicDialouge2 := "(Urk.)"
+	phoenixPanicDialouge3 := "(uh-oh)"
+	phoenixPanicDialouge4 := "(oops)"
+	phoenixPanicDialouge5 := "(oh no!)"
+	phoenixPanicDialouge6 := "(How do I get out of this?)"
+	phoenixPanicDialouge7 := "(This isn't going well!)"
+	phoenixPanicDialouge8 := "Uhhhh... Ummmm... (oh-no!)"
+	phoenixPanicDialouges := []string{phoenixPanicDialouge1, phoenixPanicDialouge2, phoenixPanicDialouge3, phoenixPanicDialouge4, phoenixPanicDialouge5, phoenixPanicDialouge6, phoenixPanicDialouge7, phoenixPanicDialouge8}
 
 	edgeworthConfidentDialouge1 := "That is incorrect."
 	edgeworthConfidentDialouge2 := "There is a problem with your statement."
@@ -613,16 +613,16 @@ func randomDialouge(frame Frame) Frame {
 
 	if frame.character.characterType == "D" {
 		if frame.character.expression.Emotion == "Confident" {
-			frame.character.speech.text = RandomInDialogueList(pheonixConfidentDialouges)
+			frame.character.speech.text = RandomInDialogueList(phoenixConfidentDialouges)
 		}
 		if frame.character.expression.Emotion == "Sad" {
-			frame.character.speech.text = RandomInDialogueList(pheonixSadDialouges)
+			frame.character.speech.text = RandomInDialogueList(phoenixSadDialouges)
 		}
 		if frame.character.expression.Emotion == "Panic" {
-			frame.character.speech.text = RandomInDialogueList(pheonixPanicDialouges)
+			frame.character.speech.text = RandomInDialogueList(phoenixPanicDialouges)
 		}
 		if frame.character.expression.Emotion == "Accusation" {
-			frame.character.speech.text = RandomInDialogueList(pheonixAccusationDialouges)
+			frame.character.speech.text = RandomInDialogueList(phoenixAccusationDialouges)
 		}
 	}
 	if frame.character.characterType == "P" {
@@ -673,19 +673,19 @@ func RandomInEmotionList(list []EmotionPattern) EmotionPattern {
 	return list[random]
 }
 
-func setExpressions(frame Frame, scene Scene, PheonixExpressionsConfident []Expression, EdgeworthExpressionsConfident []Expression, EdgeworthExpressionsDefault []Expression, JudgeExpressionsDefault []Expression, JudgeExpressionsPanic []Expression, PheonixExpressionsPanic []Expression, PheonixExpressionsAccusation []Expression, PheonixExpressionsSad []Expression, EdgeworthExpressionsPanic []Expression, EdgeworthExpressionsAccusation []Expression, JudgeExpressionsAccusation []Expression) Frame {
+func setExpressions(frame Frame, scene Scene, PhoenixExpressionsConfident []Expression, EdgeworthExpressionsConfident []Expression, EdgeworthExpressionsDefault []Expression, JudgeExpressionsDefault []Expression, JudgeExpressionsPanic []Expression, PhoenixExpressionsPanic []Expression, PhoenixExpressionsAccusation []Expression, PhoenixExpressionsSad []Expression, EdgeworthExpressionsPanic []Expression, EdgeworthExpressionsAccusation []Expression, JudgeExpressionsAccusation []Expression) Frame {
 	if frame.character.characterType == "D" {
 		if scene.emotionpattern.emotionTypes[frame.id] == "Confident" {
-			frame.character.expression = RandomInExpressionList(PheonixExpressionsConfident)
+			frame.character.expression = RandomInExpressionList(PhoenixExpressionsConfident)
 		}
 		if scene.emotionpattern.emotionTypes[frame.id] == "Panic" {
-			frame.character.expression = RandomInExpressionList(PheonixExpressionsPanic)
+			frame.character.expression = RandomInExpressionList(PhoenixExpressionsPanic)
 		}
 		if scene.emotionpattern.emotionTypes[frame.id] == "Accusation" {
-			frame.character.expression = RandomInExpressionList(PheonixExpressionsAccusation)
+			frame.character.expression = RandomInExpressionList(PhoenixExpressionsAccusation)
 		}
 		if scene.emotionpattern.emotionTypes[frame.id] == "Sad" {
-			frame.character.expression = RandomInExpressionList(PheonixExpressionsSad)
+			frame.character.expression = RandomInExpressionList(PhoenixExpressionsSad)
 		}
 	}
 	if frame.character.characterType == "P" {

@@ -10,9 +10,9 @@ RUN apt-get install curl python3 python3-pip python3-venv libbluetooth-dev libop
 
 RUN pip install setuptools==58
 
-COPY print/requirements.txt .
+COPY requirements.txt .
 
-COPY print/custom_pkgs custom_pkgs
+COPY custom_pkgs custom_pkgs
 
 RUN pip install -r requirements.txt
 
@@ -20,6 +20,6 @@ RUN pip install -e ./custom_pkgs/pybluez
 
 RUN pip install -e ./custom_pkgs/ppa6
 
-COPY print/main.py main.py
+COPY main.py main.py
 
-CMD ["python3", "main.py", "/phoenix_images/image0.jpg","/phoenix_images/image1.jpg","/phoenix_images/image2.jpg","/phoenix_images/image3.jpg"]
+CMD ["python3", "main.py", "http://localhost:8000"]

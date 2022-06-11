@@ -1,0 +1,20 @@
+# A docker-compose must always start with the version tag. "3" is the latest version at this time.
+version: "20"
+services:
+  print:
+    image: "headblockhead/phoenix/print:0.1"
+    build: print
+    volumes:
+      - DecodeOutput:/phoenix_output
+    environment:
+      - PHOENIX_PRINT_MODE=decode
+    network_mode: "host"
+    depends_on:
+      - gen
+  gen:
+    image: "headblockhead/phoenix/gen:0.1"
+    build: gen
+    ports:
+      - 8000:8000 # HOST:CONTAINER
+volumes: # add this section
+  DecodeOutput: # does not need anything underneath this

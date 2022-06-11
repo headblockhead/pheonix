@@ -7,6 +7,7 @@ import (
 	"image/jpeg"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	gen "github.com/headblockhead/phoenix"
@@ -15,11 +16,23 @@ import (
 type Response struct {
 	Frames    [][]byte
 	Objection []byte
+	Seed      int
 }
 
 func Handle(w http.ResponseWriter, r *http.Request) {
 	var resp Response
-	seed := int(time.Now().Unix())
+	var queries = r.URL.Query()
+	seed := int(time.Now().UTC().UnixNano())
+	if queries.Get("seed") != "" {
+		var err error
+		seed, err = strconv.Atoi(queries.Get("seed"))
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "Invalid seed", http.StatusBadRequest)
+			return
+		}
+	}
+	resp.Seed = seed
 	frames, objection, err := gen.Generate(seed)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("failed to generate: %v", err), http.StatusInternalServerError)
@@ -42,6 +55,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		}
 		resp.Frames[i] = b.Bytes()
 	}
+
 	enc := json.NewEncoder(w)
 	enc.SetIndent("", " ")
 	enc.Encode(resp)

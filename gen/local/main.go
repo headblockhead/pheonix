@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	http.ListenAndServe("localhost:8000", http.HandlerFunc(handler.Handle))
+	http.ListenAndServe("0.0.0.0:8000", http.HandlerFunc(handler.Handle))
 }
