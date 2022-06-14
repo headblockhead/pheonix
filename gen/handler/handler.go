@@ -14,9 +14,10 @@ import (
 )
 
 type Response struct {
-	Frames    [][]byte
-	Objection []byte
-	Seed      int
+	Frames            [][]byte
+	Objection         []byte
+	Seed              int
+	ObjectionLocation int
 }
 
 func Handle(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +34,8 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	resp.Seed = seed
-	frames, objection, err := gen.Generate(seed)
+	frames, objection, ObjectionLocation, err := gen.Generate(seed)
+	resp.ObjectionLocation = ObjectionLocation
 	if err != nil {
 		http.Error(w, fmt.Sprintf("failed to generate: %v", err), http.StatusInternalServerError)
 		return

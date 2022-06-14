@@ -72,7 +72,7 @@ type Expression struct {
 	Emotion string
 }
 
-func Generate(seed int) (frames []image.Image, objection image.Image, err error) {
+func Generate(seed int) (frames []image.Image, objection image.Image, objectionLocation int, err error) {
 	pattern1 := Pattern{frametypes: []string{"D", "P", "D", "C"}, id: 1}
 	pattern2 := Pattern{frametypes: []string{"D", "J", "P", "J"}, id: 2}
 	pattern3 := Pattern{frametypes: []string{"D", "W", "D", "W"}, id: 3}
@@ -319,6 +319,7 @@ func Generate(seed int) (frames []image.Image, objection image.Image, err error)
 		}
 		frames = append(frames, textBoxAddedImage)
 	}
+	objectionLocation = scene.objection.objectionLocation
 	return
 }
 
