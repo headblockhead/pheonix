@@ -7,3 +7,8 @@ decode: build
 	-rm -rf DecodeOutput
 	docker compose --file decode_only.yaml up --abort-on-container-exit
 	sudo cp -r /var/lib/docker/volumes/pheonix_DecodeOutput/_data ./DecodeOutput
+lamdabuild:
+	cd gen/cdk
+	cdk synth
+	cd cdk.out
+	zip -r ../../output.zip asset.*/bootstrap

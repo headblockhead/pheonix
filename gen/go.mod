@@ -21,4 +21,5 @@ require (
 	github.com/aws/aws-cdk-go/awscdk v1.159.0-devpreview
 	github.com/aws/aws-cdk-go/awscdk/v2 v2.27.0
 	github.com/aws/jsii-runtime-go v1.60.1 // indirect
+	github.com/awslabs/aws-lambda-go-api-proxy v0.13.2
 )
