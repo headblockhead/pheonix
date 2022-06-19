@@ -16,6 +16,7 @@ require (
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
+	github.com/NYTimes/gziphandler v1.1.1
 	github.com/a-h/awsapigatewayv2handler v0.0.0-20220411143738-79bfb034bec6
 	github.com/aws/aws-cdk-go/awscdk v1.159.0-devpreview
 	github.com/aws/aws-cdk-go/awscdk/v2 v2.27.0

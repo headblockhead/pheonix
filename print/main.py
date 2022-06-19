@@ -33,7 +33,7 @@ def get_printing_data(url):
     seed = encoded_images_request_json["Seed"]
 
     img = qrcode.make(
-        "https://www.headblockhead.com/phoenix.html?seed=" + str(seed))
+        "https://www.headblockhead.com/projects/phoenix/?seed=" + str(seed))
 
     image = img
     size = (120, 120)
