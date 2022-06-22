@@ -11,5 +11,5 @@ lamdabuild:
 	-rm -r gen/cdk/cdk.out
 	-rm cdk_out_zip.zip
 	cd gen/cdk; cdk synth
-	zip -r cdk_out_zip.zip gen/cdk/cdk.out/asset.*/bootstrap
+	zip -rj cdk_out_zip.zip gen/cdk/cdk.out/asset.*/bootstrap
 	aws lambda update-function-code --zip-file fileb://cdk_out_zip.zip --function-name PhoenixGenerator-handlerE1533BD5-GaaDanuJjl28
