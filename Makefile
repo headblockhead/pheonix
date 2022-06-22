@@ -4,11 +4,12 @@ build:
 print: build
 	docker compose --file print.yaml up --abort-on-container-exit
 decode: build
-	-rm -rf DecodeOutput
+	-rm -r DecodeOutput
 	docker compose --file decode_only.yaml up --abort-on-container-exit
 	sudo cp -r /var/lib/docker/volumes/pheonix_DecodeOutput/_data ./DecodeOutput
 lamdabuild:
-	cd gen/cdk
-	cdk synth
-	cd cdk.out
-	zip -r ../../output.zip asset.*/bootstrap
+	-rm -r gen/cdk/cdk.out
+	-rm cdk_out_zip.zip
+	cd gen/cdk; cdk synth
+	zip -r cdk_out_zip.zip gen/cdk/cdk.out/asset.*/bootstrap
+	aws lambda update-function-code --zip-file fileb://cdk_out_zip.zip --function-name PhoenixGenerator-handlerE1533BD5-GaaDanuJjl28
