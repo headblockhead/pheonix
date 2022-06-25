@@ -11,6 +11,7 @@ import (
 	"time"
 
 	gen "github.com/headblockhead/phoenix"
+	"github.com/nfnt/resize"
 )
 
 type Response struct {
@@ -47,6 +48,10 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 			log.Printf("failed to encode the objection: %v\n", err)
 		}
 		resp.Objection = o.Bytes()
+	}
+	for i := 0; i < len(frames); i++ {
+		newImage := resize.Resize(480, 320, frames[i], resize.Lanczos3)
+		frames[i] = newImage
 	}
 	resp.Frames = make([][]byte, len(frames))
 	for i := 0; i < len(frames); i++ {

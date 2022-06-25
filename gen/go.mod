@@ -22,4 +22,5 @@ require (
 	github.com/aws/aws-cdk-go/awscdk/v2 v2.27.0
 	github.com/aws/jsii-runtime-go v1.60.1 // indirect
 	github.com/awslabs/aws-lambda-go-api-proxy v0.13.2
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 )
