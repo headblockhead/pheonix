@@ -34,6 +34,10 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	if queries.Get("fullQualtity") == "" {
+		http.Error(w, "Missing fullQualtity query", http.StatusBadRequest)
+		return
+	}
 	resp.Seed = seed
 	frames, objection, ObjectionLocation, err := gen.Generate(seed)
 	resp.ObjectionLocation = ObjectionLocation
@@ -49,9 +53,11 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		}
 		resp.Objection = o.Bytes()
 	}
-	for i := 0; i < len(frames); i++ {
-		newImage := resize.Resize(480, 320, frames[i], resize.Lanczos3)
-		frames[i] = newImage
+	if queries.Get("fullQuality") == "false" {
+		for i := 0; i < len(frames); i++ {
+			newImage := resize.Resize(480, 320, frames[i], resize.Lanczos3)
+			frames[i] = newImage
+		}
 	}
 	resp.Frames = make([][]byte, len(frames))
 	for i := 0; i < len(frames); i++ {
