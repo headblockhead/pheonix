@@ -34,8 +34,9 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - uses: montudor/action-zip@v1
-        with:
-          args: zip -rj cdk_out_zip.zip gen/cdk/cdk.out/asset.*/bootstrap
+      - name: "Install ZIP tools"
+        run: "apt install zip"
+      - name: "ZIP"
+        run: "zip -rj cdk_out_zip.zip gen/cdk/cdk.out/asset.*/bootstrap"
       - name: Update function code
         run: "aws lambda update-function-code --zip-file fileb://cdk_out_zip.zip --function-name PhoenixGenerator-handlerE1533BD5-GaaDanuJjl28"
