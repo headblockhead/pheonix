@@ -34,8 +34,8 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if queries.Get("fullQualtity") == "" {
-		http.Error(w, "Missing fullQualtity query", http.StatusBadRequest)
+	if queries.Get("fullQuality") == "" {
+		http.Error(w, "Missing fullQuality query", http.StatusBadRequest)
 		return
 	}
 	resp.Seed = seed
@@ -58,6 +58,10 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 			newImage := resize.Resize(480, 320, frames[i], resize.Lanczos3)
 			frames[i] = newImage
 		}
+	}
+	if queries.Get("fullQuality") == "true" {
+		http.Error(w, "fullQualtity true", http.StatusTeapot)
+		return
 	}
 	resp.Frames = make([][]byte, len(frames))
 	for i := 0; i < len(frames); i++ {
