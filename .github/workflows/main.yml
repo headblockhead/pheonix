@@ -34,6 +34,12 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: "LS"
+        run: "ls ./"
+      - name: "LS 2"
+        run: "ls ./gen/cdk/"
+      - name: "LS 3"
+        run: "ls ./gen/cdk/cdk.out"
       - uses: montudor/action-zip@v1
         with:
           args: zip -rj cdk_out_zip.zip gen/cdk/cdk.out/asset.*/bootstrap
