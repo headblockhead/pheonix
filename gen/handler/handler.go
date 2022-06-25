@@ -55,7 +55,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 	if queries.Get("fullQuality") == "false" {
 		for i := 0; i < len(frames); i++ {
-			newImage := resize.Resize(96, 64, frames[i], resize.Lanczos3)
+			newImage := resize.Resize(240, 160, frames[i], resize.Lanczos3)
 			frames[i] = newImage
 		}
 	}
