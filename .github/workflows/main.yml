@@ -17,7 +17,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    container: ghcr.io/a-h/aws-go-cdk-action:main
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -28,16 +28,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
-      - name: cdk synth
-        uses: youyo/aws-cdk-github-actions@v2
-        with:
-          cdk_args: '-buildvcs=false'
-          cdk_subcommand: 'synth'
-          cdk_version: '1.16.2'
-          working_dir: 'gen/cdk/.'
+      - name: CDK synth
+        working-directory: 'gen/cdk/'
+        run: "cdk synth"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: 'eu-west-2'
       - name: Update function code
         run: "aws lambda update-function-code --zip-file fileb://cdk_out_zip.zip --function-name PhoenixGenerator-handlerE1533BD5-GaaDanuJjl28"
