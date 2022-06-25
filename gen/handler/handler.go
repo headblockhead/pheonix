@@ -59,10 +59,6 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 			frames[i] = newImage
 		}
 	}
-	if queries.Get("fullQuality") == "true" {
-		http.Error(w, "fullQualtity true", http.StatusTeapot)
-		return
-	}
 	resp.Frames = make([][]byte, len(frames))
 	for i := 0; i < len(frames); i++ {
 		b := new(bytes.Buffer)
