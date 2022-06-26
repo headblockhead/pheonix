@@ -34,8 +34,8 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if queries.Get("fullQuality") == "" {
-		http.Error(w, "Missing fullQuality query", http.StatusBadRequest)
+	if queries.Get("scale") == "" {
+		http.Error(w, "Missing scale query", http.StatusBadRequest)
 		return
 	}
 	resp.Seed = seed
@@ -53,11 +53,15 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		}
 		resp.Objection = o.Bytes()
 	}
-	if queries.Get("fullQuality") == "false" {
-		for i := 0; i < len(frames); i++ {
-			newImage := resize.Resize(259, 173, frames[i], resize.Lanczos3)
-			frames[i] = newImage
-		}
+	imageScaleUint, err := strconv.ParseUint(queries.Get("scale"), 10, 64)
+	if err != nil {
+		http.Error(w, "Bad scale value", http.StatusBadRequest)
+		return
+	}
+	imageScalePercent := uint(imageScaleUint) / 100
+	for i := 0; i < len(frames); i++ {
+		newImage := resize.Resize(960*imageScalePercent, 640*imageScalePercent, frames[i], resize.Lanczos3)
+		frames[i] = newImage
 	}
 	resp.Frames = make([][]byte, len(frames))
 	for i := 0; i < len(frames); i++ {
