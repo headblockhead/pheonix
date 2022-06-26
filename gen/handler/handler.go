@@ -53,12 +53,12 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		}
 		resp.Objection = o.Bytes()
 	}
-	imageScaleUint, err := strconv.ParseUint(queries.Get("scale"), 10, 64)
+	imageScaleInt, err := strconv.Atoi(queries.Get("scale"))
 	if err != nil {
 		http.Error(w, "Bad scale value", http.StatusBadRequest)
 		return
 	}
-	imageScalePercent := uint(imageScaleUint) / 100
+	imageScalePercent := uint(imageScaleInt) / 100
 	for i := 0; i < len(frames); i++ {
 		newImage := resize.Resize(960*imageScalePercent, 640*imageScalePercent, frames[i], resize.Lanczos3)
 		frames[i] = newImage
