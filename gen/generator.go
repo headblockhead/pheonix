@@ -285,12 +285,12 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 	for i := 0; i < len(scene.frames); i++ {
 		scene.frames[i] = randomDialouge(scene.frames[i])
 	}
-	fmt.Println(scene)
+	// fmt.Println(scene)
 	if scene.objection.objectionActive {
 		objectionPath, err := getObjectionFramePath(scene.objection)
 		if err != nil {
 			fmt.Println("Error getting objection path: ", err)
-			os.Exit(1)
+			return nil, nil, 0, err
 		}
 		objection = GetImage(objectionPath)
 	}
@@ -300,19 +300,19 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if err != nil {
 			fmt.Println("Error getting images: ", err)
 			fmt.Println("Paths: ", bgPath, fgPath, characterPath)
-			os.Exit(1)
+			return nil, nil, 0, err
 		}
 		finalImage, err := AssembleImage(bgImage, fgImage, characterImage)
 		if err != nil {
 			fmt.Println("Error assembling image: ", err)
-			os.Exit(1)
+			return nil, nil, 0, err
 		}
 
 		boxImage := GetImage("images/speech_box/box.png")
 		textBoxAddedImage, err := combineImages(finalImage, boxImage)
 		if err != nil {
 			fmt.Println("Error assembling image: ", err)
-			os.Exit(1)
+			return nil, nil, 0, err
 		}
 		if scene.frames[i].character.characterType == "C" {
 			textBoxAddedImage = finalImage

@@ -1,0 +1,8 @@
+# A docker-compose must always start with the version tag. "3" is the latest version at this time.
+version: "20"
+services:
+  gen:
+    image: "headblockhead/phoenix/gen:0.1"
+    build: gen
+    ports:
+      - 8000:8000 # HOST:CONTAINER
