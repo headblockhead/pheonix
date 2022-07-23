@@ -319,7 +319,7 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if scene.frames[i].character.characterType == "C" {
 			textBoxAddedImage = finalImage
 		}
-		finalTextAddedImage, err := addLabel(textBoxAddedImage, 0, 0, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
+		finalTextAddedImage, err := addLabel(textBoxAddedImage, 12, 491, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
@@ -354,9 +354,10 @@ func addLabel(img image.Image, x, y int, label string) (outimage image.Image, er
 	var w = img.Bounds().Dx()
 	var h = img.Bounds().Dy()
 	dc := gg.NewContext(w, h)
+	// Text color - white
 	dc.SetRGB(1, 1, 1)
-	dc.Clear()
-	dc.SetRGB(0, 0, 0)
+
+	// Load the font
 	fontBytes, err := fonts.ReadFile("fonts/Roboto-Regular.ttf")
 	if err != nil {
 		return nil, err
@@ -367,9 +368,12 @@ func addLabel(img image.Image, x, y int, label string) (outimage image.Image, er
 	}
 	dc.SetFontFace(face)
 
+	// Draw the background
 	dc.DrawImage(img, 0, 0)
-	dc.DrawStringAnchored(label, float64(x), float64(y), 0.5, 0.5)
+	// Draw text at position - anchor on the top left corner of the text
+	dc.DrawStringAnchored(label, float64(x), float64(y), 0, 0)
 	dc.Clip()
+
 	outimage = dc.Image()
 	return outimage, nil
 }
