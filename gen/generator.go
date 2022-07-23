@@ -12,10 +12,15 @@ import (
 	"os"
 
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font"
 )
 
 //go:embed images
 var images embed.FS
+
+//go:embed fonts
+var fonts embed.FS
 
 type Scene struct {
 	seed           int
@@ -336,6 +341,18 @@ func getSeedFromBytes(bytes []byte) (seed int) {
 	return seed
 }
 
+func loadFontFaceReader(fontBytes []byte, points float64) (font.Face, error) {
+	f, err := truetype.Parse(fontBytes)
+	if err != nil {
+		return nil, err
+	}
+	face := truetype.NewFace(f, &truetype.Options{
+		Size: points,
+		// Hinting: font.HintingFull,
+	})
+	return face, nil
+}
+
 func addLabel(img *image.RGBA, x, y int, label string) (err error) {
 	var w = img.Bounds().Dx()
 	var h = img.Bounds().Dy()
@@ -343,9 +360,16 @@ func addLabel(img *image.RGBA, x, y int, label string) (err error) {
 	dc.SetRGB(1, 1, 1)
 	dc.Clear()
 	dc.SetRGB(0, 0, 0)
-	if err := dc.LoadFontFace("fonts/Roboto-Regular.ttf", 96); err != nil {
-		panic(err)
+	fontBytes, err := fonts.ReadFile("Roboto-Regular.ttf")
+	if err != nil {
+		return err
 	}
+	face, err := loadFontFaceReader(fontBytes, 96)
+	if err != nil {
+		return err
+	}
+	dc.SetFontFace(face)
+
 	dc.DrawImage(img, 0, 0)
 	dc.DrawStringAnchored("Hello, world!", 0, 0, 0.5, 0.5)
 	dc.Clip()
