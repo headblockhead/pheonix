@@ -319,7 +319,11 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		b := textBoxAddedImage.Bounds()
 		m := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
 		draw.Draw(m, m.Bounds(), textBoxAddedImage, b.Min, draw.Src)
-		addLabel(m, 0, 0, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
+		err = addLabel(m, 0, 0, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
+		if err != nil {
+			fmt.Println("Error adding label: ", err)
+			return nil, nil, 0, err
+		}
 		frames = append(frames, m)
 	}
 	objectionLocation = scene.objection.objectionLocation
@@ -334,7 +338,7 @@ func getSeedFromBytes(bytes []byte) (seed int) {
 	return seed
 }
 
-func addLabel(img *image.RGBA, x, y int, label string) {
+func addLabel(img *image.RGBA, x, y int, label string) (err error) {
 	c := freetype.NewContext()
 	fontfile := "fonts/Roboto-Regular.ttf"
 	fontBytes, err := ioutil.ReadFile(fontfile)
@@ -353,8 +357,9 @@ func addLabel(img *image.RGBA, x, y int, label string) {
 	pt := freetype.Pt(x, y+int(c.PointToFixed(size)>>6))
 
 	if _, err := c.DrawString(label, pt); err != nil {
-		// handle error
+		return err
 	}
+	return nil
 }
 
 func getObjectionFramePath(objection Objection) (path string, err error) {
