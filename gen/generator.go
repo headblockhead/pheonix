@@ -319,15 +319,12 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if scene.frames[i].character.characterType == "C" {
 			textBoxAddedImage = finalImage
 		}
-		b := textBoxAddedImage.Bounds()
-		m := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
-		draw.Draw(m, m.Bounds(), textBoxAddedImage, b.Min, draw.Src)
-		err = addLabel(m, 0, 0, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
+		finalTextAddedImage, err := addLabel(textBoxAddedImage, 0, 0, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
 		}
-		frames = append(frames, m)
+		frames = append(frames, finalTextAddedImage)
 	}
 	objectionLocation = scene.objection.objectionLocation
 	return
@@ -353,7 +350,7 @@ func loadFontFaceReader(fontBytes []byte, points float64) (font.Face, error) {
 	return face, nil
 }
 
-func addLabel(img *image.RGBA, x, y int, label string) (err error) {
+func addLabel(img image.Image, x, y int, label string) (outimage image.Image, err error) {
 	var w = img.Bounds().Dx()
 	var h = img.Bounds().Dy()
 	dc := gg.NewContext(w, h)
@@ -362,18 +359,19 @@ func addLabel(img *image.RGBA, x, y int, label string) (err error) {
 	dc.SetRGB(0, 0, 0)
 	fontBytes, err := fonts.ReadFile("fonts/Roboto-Regular.ttf")
 	if err != nil {
-		return err
+		return nil, err
 	}
-	face, err := loadFontFaceReader(fontBytes, 96)
+	face, err := loadFontFaceReader(fontBytes, 24)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	dc.SetFontFace(face)
 
 	dc.DrawImage(img, 0, 0)
-	dc.DrawStringAnchored("Hello, world!", 0, 0, 0.5, 0.5)
+	dc.DrawStringAnchored(label, float64(x), float64(y), 0.5, 0.5)
 	dc.Clip()
-	return nil
+	outimage = dc.Image()
+	return outimage, nil
 }
 
 func getObjectionFramePath(objection Objection) (path string, err error) {
