@@ -317,10 +317,7 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 			fmt.Println("Error assembling image: ", err)
 			return nil, nil, 0, err
 		}
-		if scene.frames[i].character.characterType == "C" {
-			textBoxAddedImage = finalImage
-		}
-		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 511, scene.frames[i].character.speech.text, 49)
+		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 560, scene.frames[i].character.speech.text, 49)
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
@@ -329,6 +326,9 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
+		}
+		if scene.frames[i].character.characterType == "C" {
+			finalTextAddedImage2 = finalImage
 		}
 		frames = append(frames, finalTextAddedImage2)
 	}
