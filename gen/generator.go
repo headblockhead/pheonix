@@ -8,12 +8,10 @@ import (
 	"image/draw"
 	"image/jpeg"
 	"image/png"
-	"io/ioutil"
-	"log"
 	"math/rand"
 	"os"
 
-	"github.com/golang/freetype"
+	"github.com/fogleman/gg"
 )
 
 //go:embed images
@@ -339,26 +337,18 @@ func getSeedFromBytes(bytes []byte) (seed int) {
 }
 
 func addLabel(img *image.RGBA, x, y int, label string) (err error) {
-	c := freetype.NewContext()
-	fontfile := "fonts/Roboto-Regular.ttf"
-	fontBytes, err := ioutil.ReadFile(fontfile)
-	if err != nil {
-		log.Println(err)
-		return
+	var w = img.Bounds().Dx()
+	var h = img.Bounds().Dy()
+	dc := gg.NewContext(w, h)
+	dc.SetRGB(1, 1, 1)
+	dc.Clear()
+	dc.SetRGB(0, 0, 0)
+	if err := dc.LoadFontFace("fonts/Roboto-Regular.ttf", 96); err != nil {
+		panic(err)
 	}
-	f, err := freetype.ParseFont(fontBytes)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	c.SetFont(f)
-	c.SetDst(img)
-	size := 64.0 // font size in pixels
-	pt := freetype.Pt(x, y+int(c.PointToFixed(size)>>6))
-
-	if _, err := c.DrawString(label, pt); err != nil {
-		return err
-	}
+	dc.DrawImage(img, 0, 0)
+	dc.DrawStringAnchored("Hello, world!", 0, 0, 0.5, 0.5)
+	dc.Clip()
 	return nil
 }
 
