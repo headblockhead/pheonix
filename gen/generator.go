@@ -10,6 +10,7 @@ import (
 	"image/png"
 	"math/rand"
 	"os"
+	"strings"
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
@@ -319,8 +320,12 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if scene.frames[i].character.characterType == "C" {
 			textBoxAddedImage = finalImage
 		}
-		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 511, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd", 24)
-		finalTextAddedImage2, err := addLabel(finalTextAddedImage, 15, 477, "Phoenix Wright 123", 24)
+		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 511, scene.frames[i].character.speech.text, 49)
+		if err != nil {
+			fmt.Println("Error adding label: ", err)
+			return nil, nil, 0, err
+		}
+		finalTextAddedImage2, err := addLabel(finalTextAddedImage, 15, 477, strings.Split(scene.frames[i].character.name, " ")[0], 28)
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
