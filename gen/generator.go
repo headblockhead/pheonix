@@ -360,7 +360,7 @@ func addLabel(img *image.RGBA, x, y int, label string) (err error) {
 	dc.SetRGB(1, 1, 1)
 	dc.Clear()
 	dc.SetRGB(0, 0, 0)
-	fontBytes, err := fonts.ReadFile("Roboto-Regular.ttf")
+	fontBytes, err := fonts.ReadFile("fonts/Roboto-Regular.ttf")
 	if err != nil {
 		return err
 	}
