@@ -5,16 +5,15 @@ import (
 	"errors"
 	"fmt"
 	"image"
-	"image/color"
 	"image/draw"
 	"image/jpeg"
 	"image/png"
+	"io/ioutil"
+	"log"
 	"math/rand"
 	"os"
 
-	"golang.org/x/image/font"
-	"golang.org/x/image/font/basicfont"
-	"golang.org/x/image/math/fixed"
+	"github.com/golang/freetype"
 )
 
 //go:embed images
@@ -317,7 +316,11 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if scene.frames[i].character.characterType == "C" {
 			textBoxAddedImage = finalImage
 		}
-		frames = append(frames, textBoxAddedImage)
+		b := textBoxAddedImage.Bounds()
+		m := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
+		draw.Draw(m, m.Bounds(), textBoxAddedImage, b.Min, draw.Src)
+		addLabel(m, 0, 0, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
+		frames = append(frames, m)
 	}
 	objectionLocation = scene.objection.objectionLocation
 	return
@@ -332,15 +335,26 @@ func getSeedFromBytes(bytes []byte) (seed int) {
 }
 
 func addLabel(img *image.RGBA, x, y int, label string) {
-	col := color.RGBA{200, 100, 0, 255}
-	point := fixed.Point26_6{fixed.I(x), fixed.I(y)}
-	d := &font.Drawer{
-		Dst:  img,
-		Src:  image.NewUniform(col),
-		Face: &basicfont.Face{},
-		Dot:  point,
+	c := freetype.NewContext()
+	fontfile := "fonts/Roboto-Regular.ttf"
+	fontBytes, err := ioutil.ReadFile(fontfile)
+	if err != nil {
+		log.Println(err)
+		return
 	}
-	d.DrawString(label)
+	f, err := freetype.ParseFont(fontBytes)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	c.SetFont(f)
+	c.SetDst(img)
+	size := 64.0 // font size in pixels
+	pt := freetype.Pt(x, y+int(c.PointToFixed(size)>>6))
+
+	if _, err := c.DrawString(label, pt); err != nil {
+		// handle error
+	}
 }
 
 func getObjectionFramePath(objection Objection) (path string, err error) {
