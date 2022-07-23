@@ -319,12 +319,13 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if scene.frames[i].character.characterType == "C" {
 			textBoxAddedImage = finalImage
 		}
-		finalTextAddedImage, err := addLabel(textBoxAddedImage, 12, 491, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd")
+		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 491, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd", 24)
+		finalTextAddedImage2, err := addLabel(finalTextAddedImage, 15, 457, "Phoenix Wright 123", 24)
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
 		}
-		frames = append(frames, finalTextAddedImage)
+		frames = append(frames, finalTextAddedImage2)
 	}
 	objectionLocation = scene.objection.objectionLocation
 	return
@@ -350,7 +351,7 @@ func loadFontFaceReader(fontBytes []byte, points float64) (font.Face, error) {
 	return face, nil
 }
 
-func addLabel(img image.Image, x, y int, label string) (outimage image.Image, err error) {
+func addLabel(img image.Image, x, y int, label string, size int) (outimage image.Image, err error) {
 	var w = img.Bounds().Dx()
 	var h = img.Bounds().Dy()
 	dc := gg.NewContext(w, h)
@@ -362,7 +363,7 @@ func addLabel(img image.Image, x, y int, label string) (outimage image.Image, er
 	if err != nil {
 		return nil, err
 	}
-	face, err := loadFontFaceReader(fontBytes, 24)
+	face, err := loadFontFaceReader(fontBytes, float64(size))
 	if err != nil {
 		return nil, err
 	}
