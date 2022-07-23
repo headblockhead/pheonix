@@ -317,7 +317,7 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 			fmt.Println("Error assembling image: ", err)
 			return nil, nil, 0, err
 		}
-		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 518, scene.frames[i].character.speech.text, 30)
+		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 520, scene.frames[i].character.speech.text, 30)
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
