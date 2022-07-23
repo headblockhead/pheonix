@@ -319,8 +319,8 @@ func Generate(seed int) (frames []image.Image, objection image.Image, objectionL
 		if scene.frames[i].character.characterType == "C" {
 			textBoxAddedImage = finalImage
 		}
-		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 491, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd", 24)
-		finalTextAddedImage2, err := addLabel(finalTextAddedImage, 15, 457, "Phoenix Wright 123", 24)
+		finalTextAddedImage, err := addLabel(textBoxAddedImage, 15, 511, "hsdkjhdakhdkjsahdkjahdkjahdkjhadkjasd", 24)
+		finalTextAddedImage2, err := addLabel(finalTextAddedImage, 15, 477, "Phoenix Wright 123", 24)
 		if err != nil {
 			fmt.Println("Error adding label: ", err)
 			return nil, nil, 0, err
