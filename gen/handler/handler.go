@@ -45,18 +45,25 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("failed to generate: %v", err), http.StatusInternalServerError)
 		return
 	}
-	if objection != nil {
-		o := new(bytes.Buffer)
-		err = jpeg.Encode(o, objection, &jpeg.Options{Quality: 100})
-		if err != nil {
-			log.Printf("failed to encode the objection: %v\n", err)
-		}
-		resp.Objection = o.Bytes()
-	}
 	imageScaleInt, err := strconv.Atoi(queries.Get("scale"))
 	if err != nil {
 		http.Error(w, "Bad scale value", http.StatusBadRequest)
 		return
+	}
+	if objection != nil {
+		o := new(bytes.Buffer)
+		if (imageScaleInt) != 100 {
+			err = jpeg.Encode(o, objection, &jpeg.Options{Quality: 50})
+			if err != nil {
+				log.Printf("failed to encode the objection: %v\n", err)
+			}
+		} else {
+			err = jpeg.Encode(o, objection, &jpeg.Options{Quality: 50})
+			if err != nil {
+				log.Printf("failed to encode the objection: %v\n", err)
+			}
+		}
+		resp.Objection = o.Bytes()
 	}
 	imageScalePercent := float32(imageScaleInt) / 100
 	for i := 0; i < len(frames); i++ {
@@ -66,10 +73,18 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	resp.Frames = make([][]byte, len(frames))
 	for i := 0; i < len(frames); i++ {
 		b := new(bytes.Buffer)
-		err = jpeg.Encode(b, frames[i], &jpeg.Options{Quality: 100})
-		if err != nil {
-			log.Printf("failed to encode frame %d: %v\n", i, err)
+		if (imageScaleInt) != 100 {
+			err = jpeg.Encode(b, frames[i], &jpeg.Options{Quality: 50})
+			if err != nil {
+				log.Printf("failed to encode frame %d: %v\n", i, err)
+			}
+		} else {
+			err = jpeg.Encode(b, frames[i], &jpeg.Options{Quality: 100})
+			if err != nil {
+				log.Printf("failed to encode frame %d: %v\n", i, err)
+			}
 		}
+
 		resp.Frames[i] = b.Bytes()
 	}
 
