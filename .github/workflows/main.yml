@@ -11,6 +11,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  group: "s3"
+  cancel-in-progress: true
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -21,8 +25,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Install compression tools
-        run: "apt install zip"
       - uses: actions/checkout@v3
       - name: CDK synth
         working-directory: 'gen/cdk/'
@@ -40,6 +42,8 @@ jobs:
         runs-on: ubuntu-latest
         needs: build
         steps:
+          - name: Install compression tools
+            run: "apt install zip"
           - name: Download artifact
             uses: actions/download-artifact@v1
             with:
