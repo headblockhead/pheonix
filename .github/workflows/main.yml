@@ -42,8 +42,6 @@ jobs:
         runs-on: ubuntu-latest
         needs: build
         steps:
-          - name: Install compression tools
-            run: "apt install zip"
           - name: Download artifact
             uses: actions/download-artifact@v1
             with:
